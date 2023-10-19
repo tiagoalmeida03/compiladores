@@ -31,23 +31,23 @@ CHRLIT('\\')
 COMMA
 IDENTIFIER(ch1)
 ASSIGN
-Line 12, column 31: unterminated char constant
+CHRLIT('\777')
 COMMA
 IDENTIFIER(ch2)
 ASSIGN
-Line 12, column 43: unterminated char constant
+Line 12, column 37: invalid char constant ('\\\'')
 COMMA
 IDENTIFIER(ch3)
 SEMI
 CHAR
 IDENTIFIER(c_1h)
 ASSIGN
-Line 13, column 21: unterminated char constant
+CHRLIT('\111')
 SEMI
 DOUBLE
 IDENTIFIER(k)
 ASSIGN
-Line 14, column 15: unrecognized character (.)
+Line 14, column 14: unrecognized character (.)
 IDENTIFIER(e)
 MINUS
 NATURAL(23)
@@ -61,7 +61,7 @@ COMMA
 IDENTIFIER(kkk)
 ASSIGN
 NATURAL(999)
-Line 14, column 37: unrecognized character (.)
+Line 14, column 36: unrecognized character (.)
 IDENTIFIER(E01)
 COMMA
 IDENTIFIER(_kkk_k)
@@ -184,9 +184,9 @@ NATURAL(5050)
 MINUS
 IDENTIFIER(i)
 SEMI
+Line 42, column 5: unrecognized character ($)
 Line 42, column 6: unrecognized character ($)
 Line 42, column 7: unrecognized character ($)
-Line 42, column 8: unrecognized character ($)
 IDENTIFIER(lower)
 ASSIGN
 NATURAL(0)

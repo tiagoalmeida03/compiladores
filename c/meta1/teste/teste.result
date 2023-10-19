@@ -3,13 +3,13 @@ IDENTIFIER(main)
 IDENTIFIER(forwhile)
 RESERVED(for)
 WHILE
-Line 3, column 6: unterminated char constant
-Line 3, column 14: unterminated char constant
-Line 4, column 3: unterminated char constant
+Line 3, column 1: invalid char constant ('for')
+Line 3, column 7: invalid char constant ('while')
+Line 4, column 1: invalid char constant ('')
 CHRLIT('f')
 CHRLIT('o')
 CHRLIT('r')
-Line 5, column 9: unterminated char constant
+Line 5, column 1: invalid char constant ('\while')
 ASSIGN
 PLUS
 IDENTIFIER(a2)

@@ -1,34 +1,34 @@
 LT
 GT
 IDENTIFIER(qwertyuiop)
-Line 1, column 14: unrecognized character (Ã)
-Line 1, column 15: unrecognized character (¡)
+Line 1, column 13: unrecognized character (Ã)
+Line 1, column 14: unrecognized character (¡)
 IDENTIFIER(sdfghjkl)
-Line 1, column 24: unrecognized character (Ã)
-Line 1, column 25: unrecognized character (§)
-Line 1, column 26: unrecognized character (~)
-Line 1, column 27: unrecognized character (\)
+Line 1, column 23: unrecognized character (Ã)
+Line 1, column 24: unrecognized character (§)
+Line 1, column 25: unrecognized character (~)
+Line 1, column 26: unrecognized character (\)
 IDENTIFIER(zxcvbnm)
 COMMA
-Line 1, column 36: unrecognized character (.)
+Line 1, column 35: unrecognized character (.)
 MINUS
 IDENTIFIER(______j)
 NOT
-Line 1, column 46: unrecognized character (")
-Line 1, column 47: unrecognized character (#)
-Line 1, column 48: unrecognized character ($)
+Line 1, column 45: unrecognized character (")
+Line 1, column 46: unrecognized character (#)
+Line 1, column 47: unrecognized character ($)
 MOD
 BITWISEAND
 DIV
 LPAR
 EQ
-Line 1, column 55: unrecognized character (?)
+Line 1, column 54: unrecognized character (?)
 MUL
-Line 1, column 57: unrecognized character (Â)
-Line 1, column 58: unrecognized character (´)
-Line 1, column 59: unrecognized character (\)
-Line 1, column 60: unrecognized character (~)
-Line 1, column 61: unrecognized character (@)
+Line 1, column 56: unrecognized character (Â)
+Line 1, column 57: unrecognized character (´)
+Line 1, column 58: unrecognized character (\)
+Line 1, column 59: unrecognized character (~)
+Line 1, column 60: unrecognized character (@)
 OR
 BITWISEOR
 CHAR
@@ -41,7 +41,7 @@ LE
 GE
 LBRACE
 RESERVED([)
-Line 4, column 8: unrecognized character (#)
+Line 4, column 7: unrecognized character (#)
 RBRACE
 NE
 RESERVED(++)
@@ -53,8 +53,8 @@ VOID
 SHORT
 WHILE
 ELSE
-Line 6, column 8: unrecognized character (\)
+Line 6, column 7: unrecognized character (\)
 IDENTIFIER(tolelele)
-Line 8, column 7: unrecognized character (?)
+Line 8, column 6: unrecognized character (?)
 IDENTIFIER(wtf)
-Line 10, column 2: unrecognized character (#)
+Line 10, column 1: unrecognized character (#)

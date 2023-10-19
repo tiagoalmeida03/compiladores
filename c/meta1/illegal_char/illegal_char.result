@@ -5,7 +5,7 @@ VOID
 RPAR
 LBRACE
 INT
-Line 2, column 10: unrecognized character (#)
+Line 2, column 9: unrecognized character (#)
 ASSIGN
 NATURAL(223)
 SEMI
@@ -21,7 +21,7 @@ LT
 NATURAL(1)
 RPAR
 LBRACE
-Line 5, column 6: unrecognized character (#)
+Line 5, column 5: unrecognized character (#)
 RETURN
 NATURAL(0)
 SEMI

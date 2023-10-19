@@ -55,9 +55,9 @@
 < NATURAL(6)
 ---
 > DECIMAL(.56)
-51,71c30,37
+51,73c30,36
 < NATURAL(134)
-< Line 14, column 5: unrecognized character (.)
+< Line 14, column 4: unrecognized character (.)
 < NATURAL(546)
 < DECIMAL(.6)
 < NATURAL(345)
@@ -77,6 +77,8 @@
 < DECIMAL(.5)
 < DECIMAL(6E-4)
 < NATURAL(567)
+< DECIMAL(.4)
+< DECIMAL(5E3)
 ---
 > DECIMAL(134.)
 > DECIMAL(546.6345)
@@ -85,11 +87,6 @@
 > DECIMAL(56.56E+4567)
 > DECIMAL(56.56E-4567)
 > DECIMAL(.45E3)
-> Line 21, column 1: unrecognized character (.)
-73,75d38
-< DECIMAL(5E3)
-< Line 21, column 2: unrecognized character (.)
-< DECIMAL(.4)
 79,82c42
 < NATURAL(56)
 < DECIMAL(.5)

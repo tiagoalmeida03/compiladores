@@ -1,4 +1,6 @@
 digit   [0-9]
+ESCSEQUENCES \\(n|t|\\|\'|\"|[0-7]{1,3})
+VALIDCHAR [^\'\n\r\\]|{ESCSEQUENCES}
 
 %{
 #include <ctype.h>
@@ -17,7 +19,7 @@ void count(char * text){
     for(int i = 0; text[i]; i++){	
 	if(text[i] == '\n'){
 	    line_num++;
-	    column_num = 0;
+	    column_num = 1;
 	}
     	else{ column_num++; }
     }
@@ -27,15 +29,11 @@ void report_error(char character, int line, int column) {
     printf("Line %d, column %d: unrecognized character (%c)\n", line, column, character);
 }
 
-void invalid_char(str character, int line, int column) {
-    printf("Line %d, column %d: invalid char constant (%s)\n", line, column, character);  /*erro a imprimir a str*/
-}
-
 void und_comment(char character, int line, int column) {
     printf("Line %d, column %d: unterminated comment\n", line, column);
 }
 
-void und_char(char character, int line, int column) {
+void und_char(int line, int column) {
     printf("Line %d, column %d: unterminated char constant\n", line, column);
 }
 
@@ -82,18 +80,18 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
 
     /* NATURAL, IDENTIFIER, DECIMAL AND CHRLIT*/
-{digit}+                                                        { count(yytext); printf("NATURAL(%s)\n", yytext); }
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { count(yytext); printf("IDENTIFIER(%s)\n", yytext); }
-({digit}"."{digit}([Ee][\+\-]?{digit})?)|{digit}[Ee][\+\-]?{digit}|{digit}"."|"."{digit}([Ee][\+\-]?{digit})?|{digit}"."([Ee][\+\-]?{digit})             { count(yytext); printf("DECIMAL(%s)\n", yytext); }
-\'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	            { count(yytext); printf("CHRLIT(%s)\n", yytext); }
+{digit}+                                                        { printf("NATURAL(%s)\n", yytext); count(yytext); }
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { printf("IDENTIFIER(%s)\n", yytext); count(yytext); }
+({digit}"."{digit}([Ee][\+\-]?{digit})?)|{digit}[Ee][\+\-]?{digit}|{digit}"."|"."{digit}([Ee][\+\-]?{digit})?|{digit}"."([Ee][\+\-]?{digit})             { printf("DECIMAL(%s)\n", yytext); count(yytext); }
+\'({VALIDCHAR})\'	            { printf("CHRLIT(%s)\n", yytext); count(yytext); }
 
 
 
     /* INVALID CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      { count(yytext); und_char(yytext[0], line_num, column_num); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { count(yytext); invalid_char(yytext[:], line_num, column_num); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { u_char(line_num, column_num); count(yytext); }
 
     /* COMMENTS */
 "//".*                      {count(yytext);}
@@ -104,9 +102,9 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 <COMMENT><<EOF>>            {und_comment(yytext[0], un_line, un_column); BEGIN 0;}
 
     /* ILLEGAL CHARACTERS */
-[\t|\r| ]	                            {column_num += yyleng;}
-\n	                                    {line_num += 1; column_num = 1;}
-.                                       { count(yytext); report_error(yytext[0], line_num, column_num); }
+[\t|\r| ]	                            { column_num += yyleng; }
+\n	                                    { line_num += 1; column_num = 1; }
+.                                       { report_error(yytext[0], line_num, column_num); count(yytext); }
 
 %%
 extern int yylex();

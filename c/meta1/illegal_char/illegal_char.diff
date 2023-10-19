@@ -1,8 +1,0 @@
-8c8
-< Line 2, column 10: unrecognized character (#)
----
-> Line 2, column 9: unrecognized character (#)
-24c24
-< Line 5, column 6: unrecognized character (#)
----
-> Line 5, column 5: unrecognized character (#)

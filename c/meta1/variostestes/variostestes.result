@@ -1,7 +1,7 @@
 CHRLIT('a')
-Line 2, column 6: unterminated char constant
+CHRLIT('\12')
 CHRLIT('\n')
-Line 4, column 7: unterminated char constant
+CHRLIT('\177')
 LT
 ASSIGN
 RESERVED(++)
