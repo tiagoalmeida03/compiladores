@@ -31,8 +31,7 @@ void report_error(char character, int line, int column) {
 %}
 
 %%
-{digit}+                { count(yytext); printf("NATURAL(%s)\n", yytext); }
-{digit}*"."{digit}+     { count(yytext); printf("DECIMAL(%s)\n", yytext); }
+
 
 {reserved}+		{ count(yytext); char* upper = toUPPER(yytext); printf("%s\n", upper); }
 
@@ -42,7 +41,6 @@ void report_error(char character, int line, int column) {
 
 [a-zA-Z]+[a-zA-Z0-9]*	{ count(yytext); printf("IDENTIFIER(%s)\n", yytext); }
 
-.                       { count(yytext); report_error(yytext[0], line_num, column_num); }
 
 char                    { count(yytext); printf("CHAR(%s)\n", yytext); }
 if                      { count(yytext); printf("IF(%s)\n", yytext); }
@@ -53,7 +51,7 @@ short                   { count(yytext); printf("SHORT(%s)\n", yytext); }
 double                  { count(yytext); printf("DOUBLE(%s)\n", yytext); }
 return                  { count(yytext); printf("RETURN(%s)\n", yytext); }
 void                    { count(yytext); printf("VOID(%s)\n", yytext); }
-\&                      { count(yytext); printf("BITWISEAND(%s)\n", yytext); }
+"&"                      { count(yytext); printf("BITWISEAND(%s)\n", yytext); }
 \|                      { count(yytext); printf("BITWISEOR(%s)\n", yytext); }
 \^                      { count(yytext); printf("BITWISEXOR(%s)\n", yytext); }
 \&\&                    { count(yytext); printf("AND(%s)\n", yytext); }
@@ -72,7 +70,7 @@ void                    { count(yytext); printf("VOID(%s)\n", yytext); }
 \%                      { count(yytext); printf("MOD(%s)\n", yytext); }
 \!\=                    { count(yytext); printf("NE(%s)\n", yytext); }
 \!                      { count(yytext); printf("NOT(%s)\n", yytext); }
-\|\|                    { count(yytext); printf("OR(%s)\n", yytext); }
+"||"                    { count(yytext); printf("OR(%s)\n", yytext); }
 \+                      { count(yytext); printf("PLUS(%s)\n", yytext); }
 \}                      { count(yytext); printf("RBRACE(%s)\n", yytext); }
 \)                      { count(yytext); printf("RPAR(%s)\n", yytext); }
@@ -82,11 +80,11 @@ void                    { count(yytext); printf("VOID(%s)\n", yytext); }
 auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { count(yytext); printf("RESERVED(%s)\n", yytext); }
 
 
-    /* INTLIT, REALIT, CHRLIT AND ID*/
-{int}                                                                       { count(yytext); printf("INTLIT(%s)\n", yytext); }
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            { count(yytext); printf("ID(%s)\n", yytext); }
-\'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        { count(yytext); printf("CHRLIT(%s)\n", yytext); }
-({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             { count(yytext); printf("REALLIT(%s)\n", yytext); }
+    /* NATURAL, DECIMAL, CHRLIT AND ID*/
+{digit}+                                                        { count(yytext); printf("NATURAL(%s)\n", yytext); }
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { count(yytext); printf("ID(%s)\n", yytext); }
+\'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	            { count(yytext); printf("CHRLIT(%s)\n", yytext); }
+({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             { count(yytext); printf("DECIMAL(%s)\n", yytext); }
 
 
     /* INVALID CHAR CONSTANTS */
@@ -104,8 +102,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
     /* ILLEGAL CHARACTERS */
 [\t|\r| ]	                            {column += yyleng;}
-
-.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
+.                                       { count(yytext); report_error(yytext[0], line_num, column_num); }
 \n	                                    {line += 1; column = 1;}
 
 %%
