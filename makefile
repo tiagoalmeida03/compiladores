@@ -1,7 +1,7 @@
 all: lexer
 
 lexer: lex.yy.c
-    cc lex.yy.c -o lex
+    cc lex.yy.c -o uccompiler
 
 lex.yy.c: lexer.l
     lex lexer.l

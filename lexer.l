@@ -1,58 +1,8 @@
-                    /* Authors: */
-/* TIAGO NUNO MATOS CABO LOPES DE ALMEIDA - 2021221615 */
-    /* JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
-
 digit   [0-9]
+reserved integer|double|if|then|else
 
 %{
 #include <ctype.h>
-#include <stdbool.h>
-#include "structures.h"
-#include "semantics.h"
-#include "gen_code.h"
-#include "functions.h"
-#include "symbol_table.h"
-#include "y.tab.h"
-
-%%
-char                    {if(l) printf("CHAR\n"); column += yyleng; if( !l && !e1 ) if( !l && !e1 ) return CHAR;}
-if                      {if(l) printf("IF\n"); column += yyleng; if( !l && !e1 ) return IF;}
-else                    {if(l) printf("ELSE\n"); column += yyleng; if( !l && !e1 ) return ELSE;}
-while                   {if(l) printf("WHILE\n"); column += yyleng; if( !l && !e1 ) return WHILE;}
-int                     {if(l) printf("INT\n"); column += yyleng; if( !l && !e1 ) return INT;}
-short                   {if(l) printf("SHORT\n"); column += yyleng; if( !l && !e1 ) return SHORT;}
-double                  {if(l) printf("DOUBLE\n"); column += yyleng; if( !l && !e1 ) return DOUBLE;}
-return                  {if(l) printf("RETURN\n"); column += yyleng; if( !l && !e1 ) return RETURN;}
-void                    {if(l) printf("VOID\n"); column += yyleng; if( !l && !e1 ) return VOID;}
-\&                       {if(l) printf("BITWISEAND\n"); column += yyleng; if( !l && !e1 ) return BITWISEAND;}
-\|                      {if(l) printf("BITWISEOR\n"); column += yyleng; if( !l && !e1 ) return BITWISEOR;}
-\^                      {if(l) printf("BITWISEXOR\n"); column += yyleng; if( !l && !e1 ) return BITWISEXOR;}
-\&\&                      {if(l) printf("AND\n"); column += yyleng; if( !l && !e1 ) return AND;}
-\=                       {if(l) printf("ASSIGN\n"); column += yyleng; if( !l && !e1 ) return ASSIGN;}
-\*                      {if(l) printf("MUL\n"); column += yyleng; if( !l && !e1 ) return MUL;}
-\,                       {if(l) printf("COMMA\n"); column += yyleng; if( !l && !e1 ) return COMMA;}
-\/                      {if(l) printf("DIV\n"); column += yyleng; if( !l && !e1 ) return DIV;}
-\=\=                      {if(l) printf("EQ\n"); column += yyleng; if( !l && !e1 ) return EQ;}
-\>\=                      {if(l) printf("GE\n"); column += yyleng; if( !l && !e1 ) return GE;}
-\>                       {if(l) printf("GT\n"); column += yyleng; if( !l && !e1 ) return GT;}
-\{                      {if(l) printf("LBRACE\n"); column += yyleng; if( !l && !e1 ) return LBRACE;}
-\<=                     {if(l) printf("LE\n"); column += yyleng; if( !l && !e1 ) return LE;}
-\(                      {if(l) printf("LPAR\n"); column += yyleng; if( !l && !e1 ) return LPAR;}
-\<                      {if(l) printf("LT\n"); column += yyleng; if( !l && !e1 ) return LT;}
-\-                      {if(l) printf("MINUS\n"); column += yyleng; if( !l && !e1 ) return MINUS;}
-\%                       {if(l) printf("MOD\n"); column += yyleng; if( !l && !e1 ) return MOD;}
-\!\=                      {if(l) printf("NE\n"); column += yyleng; if( !l && !e1 ) return NE;}
-\!                       {if(l) printf("NOT\n"); column += yyleng; if( !l && !e1 ) return NOT;}
-\|\|                    {if(l) printf("OR\n"); column += yyleng; if( !l && !e1 ) return OR;}
-\+                      {if(l) printf("PLUS\n"); column += yyleng; if( !l && !e1 ) return PLUS;}
-\}                      {if(l) printf("RBRACE\n"); column += yyleng; if( !l && !e1 ) return RBRACE;}
-\)                      {if(l) printf("RPAR\n"); column += yyleng; if( !l && !e1 ) return RPAR;}
-\;                      {if(l) printf("SEMI\n"); column += yyleng; if( !l && !e1 ) return SEMI;}
-
-    /*RESERVED WORDS*/
-auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng; if( !l && !e1 ) return RESERVED;}
-
-
 
 char * toUPPER(char * text){
     for(int i = 0; text[i]; i++){
@@ -92,8 +42,41 @@ void report_error(char character, int line, int column) {
 
 [a-zA-Z]+[a-zA-Z0-9]*	{ count(yytext); printf("IDENTIFIER(%s)\n", yytext); }
 
-
 .                       { count(yytext); report_error(yytext[0], line_num, column_num); }
+
+char                    { count(yytext); printf("CHAR(%s)\n", yytext); }
+if                      { count(yytext); printf("IF(%s)\n", yytext); }
+else                    { count(yytext); printf("ELSE(%s)\n", yytext); }
+while                   { count(yytext); printf("WHILE(%s)\n", yytext); }
+int                     { count(yytext); printf("INT(%s)\n", yytext); }
+short                   { count(yytext); printf("SHORT(%s)\n", yytext); }
+double                  { count(yytext); printf("DOUBLE(%s)\n", yytext); }
+return                  { count(yytext); printf("RETURN(%s)\n", yytext); }
+void                    { count(yytext); printf("VOID(%s)\n", yytext); }
+\&                      { count(yytext); printf("BITWISEAND(%s)\n", yytext); }
+\|                      { count(yytext); printf("BITWISEOR(%s)\n", yytext); }
+\^                      { count(yytext); printf("BITWISEXOR(%s)\n", yytext); }
+\&\&                    { count(yytext); printf("AND(%s)\n", yytext); }
+\=                      { count(yytext); printf("ASSIGN(%s)\n", yytext); }
+\*                      { count(yytext); printf("MUL(%s)\n", yytext); }
+\,                      { count(yytext); printf("COMMA(%s)\n", yytext); }
+\/                      { count(yytext); printf("DIV(%s)\n", yytext); }
+\=\=                    { count(yytext); printf("EQ(%s)\n", yytext); }
+\>\=                    { count(yytext); printf("GE(%s)\n", yytext); }
+\>                      { count(yytext); printf("GT(%s)\n", yytext); }
+\{                      { count(yytext); printf("LBRACE(%s)\n", yytext); }
+\<=                     { count(yytext); printf("LE(%s)\n", yytext); }
+\(                      { count(yytext); printf("LPAR(%s)\n", yytext); }
+\<                      { count(yytext); printf("LT(%s)\n", yytext); }
+\-                      { count(yytext); printf("MINUS(%s)\n", yytext); }
+\%                      { count(yytext); printf("MOD(%s)\n", yytext); }
+\!\=                    { count(yytext); printf("NE(%s)\n", yytext); }
+\!                      { count(yytext); printf("NOT(%s)\n", yytext); }
+\|\|                    { count(yytext); printf("OR(%s)\n", yytext); }
+\+                      { count(yytext); printf("PLUS(%s)\n", yytext); }
+\}                      { count(yytext); printf("RBRACE(%s)\n", yytext); }
+\)                      { count(yytext); printf("RPAR(%s)\n", yytext); }
+\;                      { count(yytext); printf("SEMI(%s)\n", yytext); }
 
 %%
 extern int yylex();
