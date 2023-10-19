@@ -28,6 +28,18 @@ void report_error(char character, int line, int column) {
     printf("Line %d, column %d: unrecognized character (%c)\n", line, column, character);
 }
 
+void invalid_char(char character, int line, int column) {
+    printf("Line %d, column %d: invalid char constant (%c)\n", line, column, character);
+}
+
+void und_comment(char character, int line, int column) {
+    printf("Line %d, column %d: unterminated comment (%c)\n", line, column, character);
+}
+
+void und_char(char character, int line, int column) {
+    printf("Line %d, column %d: unterminated char constant (%c)\n", line, column, character);
+}
+
 %}
 
 %%
@@ -88,10 +100,10 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
 
     /* INVALID CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      { count(yytext); und_char(yytext[0], line_num, column_num); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { count(yytext); und_char(yytext[0], line_num, column_num); }
 
     /* COMMENTS */
 "//".*                      {column += yyleng;}
