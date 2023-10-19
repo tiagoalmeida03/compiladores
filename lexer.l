@@ -78,6 +78,36 @@ void                    { count(yytext); printf("VOID(%s)\n", yytext); }
 \)                      { count(yytext); printf("RPAR(%s)\n", yytext); }
 \;                      { count(yytext); printf("SEMI(%s)\n", yytext); }
 
+    /*RESERVED WORDS*/
+auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { count(yytext); printf("RESERVED(%s)\n", yytext); }
+
+
+    /* INTLIT, REALIT, CHRLIT AND ID*/
+{int}                                                                       { count(yytext); printf("INTLIT(%s)\n", yytext); }
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            { count(yytext); printf("ID(%s)\n", yytext); }
+\'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        { count(yytext); printf("CHRLIT(%s)\n", yytext); }
+({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             { count(yytext); printf("REALLIT(%s)\n", yytext); }
+
+
+    /* INVALID CHAR CONSTANTS */
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+
+    /* UNTERMINATED CHAR CONSTANTS */
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
+
+    /* COMMENTS */
+"//".*                      {column += yyleng;}
+"/*"                        {BEGIN COMMENT; comment_error = true; unfinished_line = line; unfinished_column = column; column += yyleng;}
+<COMMENT>"*/"               {BEGIN 0; comment_error = false; column += yyleng;}
+<COMMENT>.                  {column += yyleng;}
+<COMMENT>\n                 {line += yyleng; column = 1;}
+
+    /* ILLEGAL CHARACTERS */
+[\t|\r| ]	                            {column += yyleng;}
+
+.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
+\n	                                    {line += 1; column = 1;}
+
 %%
 extern int yylex();
 int main() {
