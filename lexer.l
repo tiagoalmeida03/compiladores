@@ -1,9 +1,18 @@
+                    /* Authors: */
+/* TIAGO NUNO MATOS CABO LOPES DE ALMEIDA - 2021221615 */
+    /* JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
+
 digit   [0-9]
-reserved integer|double|if|then|else
-chrlit  char|else|while|if|int|short|double|return|void|"&"|
 
 %{
 #include <ctype.h>
+#include <stdbool.h>
+#include "structures.h"
+#include "semantics.h"
+#include "gen_code.h"
+#include "functions.h"
+#include "symbol_table.h"
+#include "y.tab.h"
 
 %%
 char                    {if(l) printf("CHAR\n"); column += yyleng; if( !l && !e1 ) if( !l && !e1 ) return CHAR;}
