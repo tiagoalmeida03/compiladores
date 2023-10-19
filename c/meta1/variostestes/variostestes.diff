@@ -1,0 +1,8 @@
+2c2
+< Line 2, column 6: unterminated char constant
+---
+> CHRLIT('\12')
+4c4
+< Line 4, column 7: unterminated char constant
+---
+> CHRLIT('\177')

@@ -1,0 +1,26 @@
+4c4
+< Line 4, column 7: unterminated char constant
+---
+> CHRLIT('\013')
+7c7
+< Line 7, column 7: unterminated char constant
+---
+> CHRLIT('\017')
+10,13c10,13
+< Line 10, column 7: unterminated char constant
+< Line 11, column 6: unterminated char constant
+< Line 12, column 6: unterminated char constant
+< Line 13, column 6: unterminated char constant
+---
+> Line 10, column 1: invalid char constant ('\018')
+> Line 11, column 1: invalid char constant ('\""')
+> Line 12, column 1: invalid char constant ('\\"')
+> CHRLIT('\12')
+16,18c16,18
+< Line 16, column 7: unterminated char constant
+< Line 17, column 7: unterminated char constant
+< Line 18, column 7: unterminated char constant
+---
+> CHRLIT('\000')
+> CHRLIT('\777')
+> Line 18, column 1: invalid char constant ('\787')

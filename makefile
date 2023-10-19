@@ -1,10 +1,8 @@
-all: lexer
+all: lex gcc
 
-lexer: lex.yy.c
-    cc lex.yy.c -o uccompiler
+lex: uccompiler.l
+	lex uccompiler.l
 
-lex.yy.c: lexer.l
-    lex lexer.l
-
-clean:
-    rm -f lex.yy.c lex
+gcc: lex.yy.c
+	gcc lex.yy.c -o lexer
+	

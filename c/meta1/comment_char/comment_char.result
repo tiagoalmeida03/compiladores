@@ -1,0 +1,8 @@
+MUL
+DIV
+CHRLIT('\t')
+Line 14, column 6: unterminated char constant
+SEMI
+DIV
+IDENTIFIER(t)
+CHRLIT('\n')

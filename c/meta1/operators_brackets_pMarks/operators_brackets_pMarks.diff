@@ -1,0 +1,25 @@
+54c54
+< Line 10, column 16: unrecognized character (:)
+---
+> Line 10, column 15: unrecognized character (:)
+68,69c68
+< NATURAL(1010)
+< Line 12, column 16: unrecognized character (.)
+---
+> DECIMAL(1010.)
+76c75
+< Line 17, column 4: unrecognized character (#)
+---
+> Line 17, column 3: unrecognized character (#)
+79c78
+< Line 19, column 4: unrecognized character (@)
+---
+> Line 19, column 3: unrecognized character (@)
+82c81
+< Line 19, column 9: unrecognized character ($)
+---
+> Line 19, column 8: unrecognized character ($)
+144c143
+< Line 36, column 3: unrecognized character (?)
+---
+> Line 36, column 2: unrecognized character (?)

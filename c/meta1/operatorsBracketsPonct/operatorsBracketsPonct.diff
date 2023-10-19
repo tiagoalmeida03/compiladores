@@ -1,0 +1,4 @@
+30c30
+< Line 20, column 2: unrecognized character (~)
+---
+> Line 20, column 1: unrecognized character (~)

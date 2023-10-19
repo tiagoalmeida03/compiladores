@@ -1,0 +1,74 @@
+2,8c2,6
+< NATURAL(1234)
+< DECIMAL(.5)
+< NATURAL(64)
+< NATURAL(234)
+< IDENTIFIER(e34)
+< NATURAL(987)
+< Line 3, column 5: unrecognized character (.)
+---
+> DECIMAL(1234.564)
+> DECIMAL(234e34)
+> DECIMAL(987.E+234)
+> DECIMAL(0987.E-08)
+> DECIMAL(0987.)
+10,23c8,9
+< PLUS
+< NATURAL(234)
+< NATURAL(0987)
+< Line 4, column 6: unrecognized character (.)
+< IDENTIFIER(E)
+< MINUS
+< NATURAL(08)
+< NATURAL(0987)
+< Line 5, column 6: unrecognized character (.)
+< IDENTIFIER(E)
+< NATURAL(567)
+< Line 6, column 5: unrecognized character (.)
+< IDENTIFIER(e987)
+< Line 7, column 2: unrecognized character (.)
+---
+> DECIMAL(567.e987)
+> Line 7, column 1: unrecognized character (.)
+29,39c15,17
+< DECIMAL(.1)
+< NATURAL(23)
+< IDENTIFIER(E)
+< PLUS
+< NATURAL(234)
+< DECIMAL(.7)
+< NATURAL(987654345678)
+< IDENTIFIER(e)
+< MINUS
+< NATURAL(98765)
+< Line 11, column 2: unrecognized character (.)
+---
+> DECIMAL(.123E+234)
+> DECIMAL(.7987654345678e-98765)
+> Line 11, column 1: unrecognized character (.)
+41c19
+< Line 12, column 2: unrecognized character (.)
+---
+> Line 12, column 1: unrecognized character (.)
+45,47c23
+< NATURAL(234)
+< DECIMAL(.0)
+< NATURAL(987)
+---
+> DECIMAL(234.0987)
+51c27
+< Line 16, column 2: unrecognized character (.)
+---
+> Line 16, column 1: unrecognized character (.)
+53c29
+< Line 17, column 2: unrecognized character (.)
+---
+> Line 17, column 1: unrecognized character (.)
+55,59c31
+< NATURAL(123)
+< Line 18, column 5: unrecognized character (.)
+< IDENTIFIER(e)
+< PLUS
+< NATURAL(34)
+---
+> DECIMAL(123.e+34)

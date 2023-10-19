@@ -1,0 +1,13 @@
+CHRLIT('a')
+Line 2, column 6: unterminated char constant
+CHRLIT('\n')
+Line 4, column 7: unterminated char constant
+LT
+ASSIGN
+RESERVED(++)
+RESERVED(--)
+IDENTIFIER(j)
+RESERVED(++)
+SEMI
+IDENTIFIER(a)
+IDENTIFIER(fg)

@@ -1,0 +1,4 @@
+4c4
+< Line 14, column 6: unterminated char constant
+---
+> Line 14, column 1: invalid char constant ('o\n')
