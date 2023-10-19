@@ -1,6 +1,11 @@
+                    /*AUTORES*/
+/*TIAGO NUNO M. C. L. DE ALMEIDA - 2021221615*/
+/* JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
+
+
 digit   [0-9]
-ESCSEQUENCES \\(n|t|\\|\'|\"|[0-7]{1,3})
-VALIDCHAR [^\'\n\r\\]|{ESCSEQUENCES}
+SEC \\(n|t|\\|\'|\"|[0-7]{1,3})
+CHARACCEPT [^\'\n\r\\]|{SEC}
 
 %{
 #include <ctype.h>
@@ -33,7 +38,7 @@ void und_comment(char character, int line, int column) {
     printf("Line %d, column %d: unterminated comment\n", line, column);
 }
 
-void und_char(int line, int column) {
+void unt_char(int line, int column) {
     printf("Line %d, column %d: unterminated char constant\n", line, column);
 }
 
@@ -83,7 +88,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 {digit}+                                                        { printf("NATURAL(%s)\n", yytext); count(yytext); }
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { printf("IDENTIFIER(%s)\n", yytext); count(yytext); }
 ({digit}"."{digit}([Ee][\+\-]?{digit})?)|{digit}[Ee][\+\-]?{digit}|{digit}"."|"."{digit}([Ee][\+\-]?{digit})?|{digit}"."([Ee][\+\-]?{digit})             { printf("DECIMAL(%s)\n", yytext); count(yytext); }
-\'({VALIDCHAR})\'	            { printf("CHRLIT(%s)\n", yytext); count(yytext); }
+\'({CHARACCEPT})\'	                                            { printf("CHRLIT(%s)\n", yytext); count(yytext); }
 
 
 
@@ -91,7 +96,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 '([^'\n\\]|(\\')|(\\[^'\n]))*'                                      { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { u_char(line_num, column_num); count(yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { unt_char(line_num, column_num); count(yytext); }
 
     /* COMMENTS */
 "//".*                      {count(yytext);}
