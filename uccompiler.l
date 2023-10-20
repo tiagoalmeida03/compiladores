@@ -9,6 +9,7 @@ CHARACCEPT [^\'\n\r\\]|{SEC}
 
 %{
 #include <ctype.h>
+#include <stdio.h>
 
 int line_num = 1, column_num = 1, un_line = 0, un_column = 0;
 
@@ -97,7 +98,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 '([^'\n\\]|(\\')|(\\[^'\n]))*'                                  { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                        { unt_char(line_num, column_num); count(yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))*                        { unt_char(line_num, column_num); count(yytext); }
 
     /* COMMENTS */
 "//".*                      {count(yytext);}

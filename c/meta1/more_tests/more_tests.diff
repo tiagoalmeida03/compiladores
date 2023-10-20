@@ -1,4 +1,0 @@
-31c31
-< Line 12, column 3: unrecognized character (')
----
-> Line 12, column 3: unterminated char constant

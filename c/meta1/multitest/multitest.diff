@@ -1,4 +1,0 @@
-38c38
-< Line 25, column 11: unrecognized character (')
----
-> Line 25, column 11: unterminated char constant

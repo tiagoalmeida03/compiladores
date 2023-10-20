@@ -35,4 +35,4 @@ Line 22, column 5: invalid char constant ('1\'\1\'1')
 CHRLIT('a')
 CHRLIT('b')
 DECIMAL(123124.e-1)
-Line 25, column 11: unrecognized character (')
+Line 25, column 11: unterminated char constant
