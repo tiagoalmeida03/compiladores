@@ -10,13 +10,6 @@ CHARACCEPT [^\'\n\r\\]|{SEC}
 %{
 #include <ctype.h>
 
-char * toUPPER(char * text){
-    for(int i = 0; text[i]; i++){
-	text[i] = toupper(text[i]);	
-    }	
-    return text;
-}
-
 int line_num = 1, column_num = 1, un_line = 0, un_column = 0;
 
 
