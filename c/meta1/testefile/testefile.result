@@ -23,12 +23,9 @@ IDENTIFIER(inteiro)
 ASSIGN
 NATURAL(102)
 SEMI
-NATURAL(109)
-DECIMAL(.1)
-NATURAL(2)
+DECIMAL(109.12)
 SEMI
-DECIMAL(1.e2)
-NATURAL(0)
+DECIMAL(1.e20)
 SEMI
 IDENTIFIER(inteiro)
 ASSIGN
@@ -48,7 +45,6 @@ Line 16, column 10: invalid char constant (' \'  ')
 Line 16, column 17: invalid char constant ('')
 CHRLIT('_')
 CHRLIT('	')
-DECIMAL(.1e-1)
-NATURAL(2)
+DECIMAL(.1e-12)
 RBRACE
 Line 21, column 1: unterminated comment

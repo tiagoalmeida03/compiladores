@@ -1,5 +1,0 @@
-43,44c43
-< NATURAL(12)
-< DECIMAL(.2)
----
-> DECIMAL(12.2)

@@ -7,8 +7,7 @@ LBRACE
 DOUBLE
 IDENTIFIER(variablename)
 ASSIGN
-NATURAL(123)
-DECIMAL(.2e-1)
+DECIMAL(123.2e-1)
 SEMI
 IDENTIFIER(variablename)
 ASSIGN
@@ -35,9 +34,5 @@ NATURAL(1)
 Line 22, column 5: invalid char constant ('1\'\1\'1')
 CHRLIT('a')
 CHRLIT('b')
-NATURAL(123124)
-Line 25, column 7: unrecognized character (.)
-IDENTIFIER(e)
-MINUS
-NATURAL(1)
+DECIMAL(123124.e-1)
 Line 25, column 11: unrecognized character (')

@@ -1,6 +1,6 @@
-                    /*AUTORES*/
+/*AUTORES*/
 /*TIAGO NUNO M. C. L. DE ALMEIDA - 2021221615*/
-/* JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
+/*JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
 
 
 digit   [0-9]
@@ -83,20 +83,28 @@ void unt_char(int line, int column) {
     /*RESERVED WORDS*/
 auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { count(yytext); printf("RESERVED(%s)\n", yytext); }
 
-
     /* NATURAL, IDENTIFIER, DECIMAL AND CHRLIT*/
 {digit}+                                                        { printf("NATURAL(%s)\n", yytext); count(yytext); }
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { printf("IDENTIFIER(%s)\n", yytext); count(yytext); }
-({digit}"."{digit}([Ee][\+\-]?{digit})?)|{digit}[Ee][\+\-]?{digit}|{digit}"."|"."{digit}([Ee][\+\-]?{digit})?|{digit}"."([Ee][\+\-]?{digit})             { printf("DECIMAL(%s)\n", yytext); count(yytext); }
+{digit}+\.{digit}*([Ee][+-]?{digit}+)? {
+    printf("DECIMAL(%s)\n", yytext);
+    count(yytext);
+}
+{digit}*\.{digit}+([Ee][+-]?{digit}+)? {
+    printf("DECIMAL(%s)\n", yytext);
+    count(yytext);
+}
+{digit}+[Ee][+-]?{digit}+ {
+    printf("DECIMAL(%s)\n", yytext);
+    count(yytext);
+}                    
 \'({CHARACCEPT})\'	                                            { printf("CHRLIT(%s)\n", yytext); count(yytext); }
 
-
-
     /* INVALID CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                  { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       { unt_char(line_num, column_num); count(yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                        { unt_char(line_num, column_num); count(yytext); }
 
     /* COMMENTS */
 "//".*                      {count(yytext);}
@@ -110,6 +118,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 [\t|\r| ]	                            { column_num += yyleng; }
 \n	                                    { line_num += 1; column_num = 1; }
 .                                       { report_error(yytext[0], line_num, column_num); count(yytext); }
+
 
 %%
 extern int yylex();

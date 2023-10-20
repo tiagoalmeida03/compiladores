@@ -1,15 +1,4 @@
-10,11c10
-< NATURAL(123)
-< DECIMAL(.2e-1)
----
-> DECIMAL(123.2e-1)
-38,43c37,38
-< NATURAL(123124)
-< Line 25, column 7: unrecognized character (.)
-< IDENTIFIER(e)
-< MINUS
-< NATURAL(1)
+38c38
 < Line 25, column 11: unrecognized character (')
 ---
-> DECIMAL(123124.e-1)
 > Line 25, column 11: unterminated char constant
