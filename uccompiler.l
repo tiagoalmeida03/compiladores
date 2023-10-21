@@ -6,13 +6,15 @@
 digit   [0-9]
 SEC \\(n|t|\\|\'|\"|[0-7]{1,3})
 CHARACCEPT [^\'\n\r\\]|{SEC}
+NL \n|\r|\r\n
 
 %{
 #include <ctype.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 int line_num = 1, column_num = 1, un_line = 0, un_column = 0;
-
+bool myFlag = false;
 
 void count(char * text){
     for(int i = 0; text[i]; i++){	
@@ -28,7 +30,7 @@ void report_error(char character, int line, int column) {
     printf("Line %d, column %d: unrecognized character (%c)\n", line, column, character);
 }
 
-void und_comment(char character, int line, int column) {
+void unt_comment(int line, int column) {
     printf("Line %d, column %d: unterminated comment\n", line, column);
 }
 
@@ -40,73 +42,73 @@ void unt_char(int line, int column) {
 %x COMMENT
 %%
 
-"char"                    { printf("CHAR\n"); count(yytext); }
-"if"                      { printf("IF\n"); count(yytext); }
-"else"                    { printf("ELSE\n"); count(yytext); }
-"while"                   { printf("WHILE\n"); count(yytext); }
-"int"                     { printf("INT\n"); count(yytext); }
-"short"                   { printf("SHORT\n"); count(yytext); }
-"double"                  { printf("DOUBLE\n"); count(yytext); }
-"return"                  { printf("RETURN\n"); count(yytext); }
-"void"                    { printf("VOID\n"); count(yytext); }
-"&"                       { printf("BITWISEAND\n"); count(yytext); }
-"|"                       { printf("BITWISEOR\n"); count(yytext); }
-"^"                       { printf("BITWISEXOR\n"); count(yytext); }
-"&&"                      { printf("AND\n"); count(yytext); }
-"="                       { printf("ASSIGN\n"); count(yytext); }
-"*"                       { printf("MUL\n"); count(yytext); }
-","                       { printf("COMMA\n"); count(yytext); }
-"/"                       { printf("DIV\n"); count(yytext); }
-"=="                      { printf("EQ\n"); count(yytext); }
-">="                      { printf("GE\n"); count(yytext); }
-">"                       { printf("GT\n"); count(yytext); }
-"{"                       { printf("LBRACE\n"); count(yytext); }
-"<="                      { printf("LE\n"); count(yytext); }
-"("                       { printf("LPAR\n"); count(yytext); }
-"<"                       { printf("LT\n"); count(yytext); }
-"-"                       { printf("MINUS\n"); count(yytext); }
-"%"                       { printf("MOD\n"); count(yytext); }
-"!="                      { printf("NE\n"); count(yytext); }
-"!"                       { printf("NOT\n"); count(yytext); }
-"||"                      { printf("OR\n"); count(yytext);}
-"+"                       { printf("PLUS\n"); count(yytext); }
-"}"                       { printf("RBRACE\n"); count(yytext); }
-")"                       { printf("RPAR\n"); count(yytext); }
-";"                       { printf("SEMI\n"); count(yytext); }
+"char"                    { if(myFlag) printf("CHAR\n"); count(yytext); }
+"if"                      { if(myFlag) printf("IF\n"); count(yytext); }
+"else"                    { if(myFlag) printf("ELSE\n"); count(yytext); }
+"while"                   { if(myFlag) printf("WHILE\n"); count(yytext); }
+"int"                     { if(myFlag) printf("INT\n"); count(yytext); }
+"short"                   { if(myFlag) printf("SHORT\n"); count(yytext); }
+"double"                  { if(myFlag) printf("DOUBLE\n"); count(yytext); }
+"return"                  { if(myFlag) printf("RETURN\n"); count(yytext); }
+"void"                    { if(myFlag) printf("VOID\n"); count(yytext); }
+"&"                       { if(myFlag) printf("BITWISEAND\n"); count(yytext); }
+"|"                       { if(myFlag) printf("BITWISEOR\n"); count(yytext); }
+"^"                       { if(myFlag) printf("BITWISEXOR\n"); count(yytext); }
+"&&"                      { if(myFlag) printf("AND\n"); count(yytext); }
+"="                       { if(myFlag) printf("ASSIGN\n"); count(yytext); }
+"*"                       { if(myFlag) printf("MUL\n"); count(yytext); }
+","                       { if(myFlag) printf("COMMA\n"); count(yytext); }
+"/"                       { if(myFlag) printf("DIV\n"); count(yytext); }
+"=="                      { if(myFlag) printf("EQ\n"); count(yytext); }
+">="                      { if(myFlag) printf("GE\n"); count(yytext); }
+">"                       { if(myFlag) printf("GT\n"); count(yytext); }
+"{"                       { if(myFlag) printf("LBRACE\n"); count(yytext); }
+"<="                      { if(myFlag) printf("LE\n"); count(yytext); }
+"("                       { if(myFlag) printf("LPAR\n"); count(yytext); }
+"<"                       { if(myFlag) printf("LT\n"); count(yytext); }
+"-"                       { if(myFlag) printf("MINUS\n"); count(yytext); }
+"%"                       { if(myFlag) printf("MOD\n"); count(yytext); }
+"!="                      { if(myFlag) printf("NE\n"); count(yytext); }
+"!"                       { if(myFlag) printf("NOT\n"); count(yytext); }
+"||"                      { if(myFlag) printf("OR\n"); count(yytext);}
+"+"                       { if(myFlag) printf("PLUS\n"); count(yytext); }
+"}"                       { if(myFlag) printf("RBRACE\n"); count(yytext); }
+")"                       { if(myFlag) printf("RPAR\n"); count(yytext); }
+";"                       { if(myFlag) printf("SEMI\n"); count(yytext); }
 
     /*RESERVED WORDS*/
 auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { count(yytext); printf("RESERVED(%s)\n", yytext); }
 
     /* NATURAL, IDENTIFIER, DECIMAL AND CHRLIT*/
-{digit}+                                                        { printf("NATURAL(%s)\n", yytext); count(yytext); }
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { printf("IDENTIFIER(%s)\n", yytext); count(yytext); }
-{digit}+\.{digit}*([Ee][+-]?{digit}+)? {
-    printf("DECIMAL(%s)\n", yytext);
+{digit}+                                                        { if(myFlag) printf("NATURAL(%s)\n", yytext); count(yytext); }
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                { if(myFlag) printf("IDENTIFIER(%s)\n", yytext); count(yytext); }
+{digit}+\.{digit}*([Ee][+-]?{digit}+)? { 
+    if(myFlag) printf("DECIMAL(%s)\n", yytext);
     count(yytext);
 }
-{digit}*\.{digit}+([Ee][+-]?{digit}+)? {
-    printf("DECIMAL(%s)\n", yytext);
+{digit}*\.{digit}+([Ee][+-]?{digit}+)? { 
+    if(myFlag) printf("DECIMAL(%s)\n", yytext);
     count(yytext);
 }
 {digit}+[Ee][+-]?{digit}+ {
-    printf("DECIMAL(%s)\n", yytext);
+    if(myFlag) printf("DECIMAL(%s)\n", yytext);
     count(yytext);
 }                    
-\'({CHARACCEPT})\'	                                            { printf("CHRLIT(%s)\n", yytext); count(yytext); }
+\'({CHARACCEPT})\'	                                            { if(myFlag) printf("CHRLIT(%s)\n", yytext); count(yytext); }
 
     /* INVALID CHAR CONSTANTS */
 '([^'\n\\]|(\\')|(\\[^'\n]))*'                                  { printf("Line %d, column %d: invalid char constant (%s)\n", line_num, column_num, yytext); count(yytext); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))*                        { unt_char(line_num, column_num); count(yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))*                       { unt_char(line_num, column_num); count(yytext); }
 
     /* COMMENTS */
-"//".*                      {count(yytext);}
-"/*"                        {BEGIN COMMENT; un_line = line_num; un_column = column_num; column_num += yyleng;}
-<COMMENT>"*/"               {BEGIN 0; count(yytext);}
-<COMMENT>.                  {count(yytext);}
-<COMMENT>\n                 {line_num++ ; column_num = 1;}
-<COMMENT><<EOF>>            {und_comment(yytext[0], un_line, un_column); BEGIN 0;}
+"//".*                      {column_num += yyleng;}
+"/*"                        {BEGIN (COMMENT); un_column = column_num; un_line = line_num; un_column += yyleng;}
+<COMMENT>.                  {un_column += yyleng;}
+<COMMENT><<EOF>>            {unt_comment(line_num, column_num); BEGIN (INITIAL);}
+<COMMENT>{NL}               {un_line++ ; un_column = 1;}
+<COMMENT>"*/"               {column_num = un_column; line_num = un_line; column_num += yyleng; BEGIN (INITIAL);}
 
     /* ILLEGAL CHARACTERS */
 [\t|\r| ]	                            { column_num += yyleng; }
@@ -116,7 +118,8 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
 %%
 extern int yylex();
-int main() {
+int main(int argc, char **argv) {
+    if(argc > 1 && argv[1][0] == '-' && argv[1][1] == 'l') myFlag = true;
     yylex();    /* run the lexical analysis automaton */
     return 0;
 }
