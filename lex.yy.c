@@ -1091,7 +1091,7 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 80 "uccompiler.l"
-{ count(yytext); printf("RESERVED(%s)\n", yytext); }
+{ if(myFlag) printf("RESERVED(%s)\n", yytext); count(yytext); }
 	YY_BREAK
 /* NATURAL, IDENTIFIER, DECIMAL AND CHRLIT*/
 case 35:

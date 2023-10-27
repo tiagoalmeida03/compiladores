@@ -8,6 +8,6 @@ for file in "./c/$meta/"*; do
         "$executable" -l < $file2 > $file/$(basename "${file}").result
         diff $file/$(basename "${file}").result $file/$(basename "${file}").out >   $file/$(basename "${file}").diff
         echo $file2
-        #diff $file/$(basename "${file}").result $file/$(basename "${file}").out
+        diff $file/$(basename "${file}").result $file/$(basename "${file}").out
     done
 done

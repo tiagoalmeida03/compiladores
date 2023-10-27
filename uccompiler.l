@@ -77,7 +77,7 @@ void unt_char(int line, int column) {
 ";"                       { if(myFlag) printf("SEMI\n"); count(yytext); }
 
     /*RESERVED WORDS*/
-auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { count(yytext); printf("RESERVED(%s)\n", yytext); }
+auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] { if(myFlag) printf("RESERVED(%s)\n", yytext); count(yytext); }
 
     /* NATURAL, IDENTIFIER, DECIMAL AND CHRLIT*/
 {digit}+                                                        { if(myFlag) printf("NATURAL(%s)\n", yytext); count(yytext); }
