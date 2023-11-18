@@ -1,0 +1,39 @@
+0a1
+> CHRLIT('f')
+2a4
+> CHRLIT('\'')
+5a8
+> CHRLIT('?')
+6a10,11
+> CHRLIT('\12')
+> CHRLIT('\123')
+8a14,18
+> CHRLIT('\777')
+> CHRLIT('\000')
+> CHRLIT('\007')
+> CHRLIT('\07')
+> CHRLIT('\377')
+9a20
+> CHRLIT('\477')
+14a26
+> CHRLIT('\0')
+15a28,29
+> CHRLIT('\"')
+> CHRLIT('"')
+18a33
+> CHRLIT('\444')
+19a35
+> CHRLIT('.')
+22a39
+> CHRLIT('\n')
+23a41,43
+> CHRLIT('=')
+> CHRLIT('<')
+> IDENTIFIER(ola)
+24a45,46
+> IDENTIFIER(ola)
+> IDENTIFIER(e)
+25a48
+> IDENTIFIER(adeus)
+27a51
+> CHRLIT('	')

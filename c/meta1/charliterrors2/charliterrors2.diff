@@ -1,0 +1,10 @@
+7a8
+> CHRLIT('\\')
+8a10,12
+> CHRLIT('\'')
+> IDENTIFIER(ola)
+> IDENTIFIER(ola)
+13a18
+> IDENTIFIER(ola)
+22a28
+> CHRLIT('\\')

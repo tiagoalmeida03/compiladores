@@ -1,0 +1,9 @@
+0a1,3
+> MUL
+> DIV
+> CHRLIT('\t')
+1a5,8
+> SEMI
+> DIV
+> IDENTIFIER(t)
+> CHRLIT('\n')

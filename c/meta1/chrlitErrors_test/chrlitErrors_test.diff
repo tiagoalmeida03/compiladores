@@ -1,0 +1,16 @@
+2a3
+> CHRLIT('"')
+14a16,21
+> CHRLIT(')')
+> CHRLIT('(')
+> CHRLIT('(')
+> CHRLIT(')')
+> CHRLIT('(')
+> CHRLIT(')')
+16a24
+> CHRLIT('?')
+17a26
+> CHRLIT('|')
+18a28,29
+> CHRLIT('|')
+> CHRLIT('|')

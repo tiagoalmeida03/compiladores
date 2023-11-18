@@ -1,0 +1,10 @@
+Line 13, column 2: unrecognized character (.)
+Line 22, column 1: unrecognized character (?)
+Line 32, column 9: invalid char constant ('   ')
+Line 34, column 54: invalid char constant ('invalid')
+Line 35, column 68: invalid char constant ('\800')
+Line 35, column 75: invalid char constant ('\1234')
+Line 36, column 29: unterminated char constant
+Line 44, column 5: unterminated char constant
+Line 45, column 5: unterminated char constant
+Line 48, column 1: unterminated comment

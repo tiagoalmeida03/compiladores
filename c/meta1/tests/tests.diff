@@ -1,0 +1,25 @@
+0a1,3
+> NOT
+> CHRLIT('2')
+> CHRLIT('\\')
+2a6,10
+> CHRLIT('\n')
+> INT
+> IDENTIFIER(main)
+> LPAR
+> RPAR
+4a13
+> CHRLIT('\\')
+6a16
+> IDENTIFIER(r)
+7a18
+> IDENTIFIER(r)
+8a20
+> IDENTIFIER(n)
+9a22
+> IDENTIFIER(r)
+10a24,27
+> IDENTIFIER(n)
+> CHRLIT('\\')
+> CHRLIT('\'')
+> CHRLIT('\"')

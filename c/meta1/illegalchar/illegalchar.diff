@@ -1,0 +1,50 @@
+0a1,3
+> LT
+> GT
+> IDENTIFIER(qwertyuiop)
+2a6
+> IDENTIFIER(sdfghjkl)
+6a11,12
+> IDENTIFIER(zxcvbnm)
+> COMMA
+7a14,16
+> MINUS
+> IDENTIFIER(______j)
+> NOT
+10a20,24
+> MOD
+> BITWISEAND
+> DIV
+> LPAR
+> EQ
+11a26
+> MUL
+16a32,43
+> OR
+> BITWISEOR
+> CHAR
+> IDENTIFIER(elsewhileifshort)
+> IDENTIFIER(inT)
+> IDENTIFIER(intdoublereturnvoid)
+> BITWISEXOR
+> AND
+> LE
+> GE
+> LBRACE
+> RESERVED([)
+17a45,55
+> RBRACE
+> NE
+> RESERVED(++)
+> RESERVED(--)
+> INT
+> DOUBLE
+> RETURN
+> VOID
+> SHORT
+> WHILE
+> ELSE
+18a57
+> IDENTIFIER(tolelele)
+19a59
+> IDENTIFIER(wtf)

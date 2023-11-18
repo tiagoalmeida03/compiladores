@@ -1,0 +1,16 @@
+0a1,5
+> INT
+> IDENTIFIER(main)
+> IDENTIFIER(forwhile)
+> RESERVED(for)
+> WHILE
+3a9,11
+> CHRLIT('f')
+> CHRLIT('o')
+> CHRLIT('r')
+4a13,17
+> ASSIGN
+> PLUS
+> IDENTIFIER(a2)
+> NATURAL(2)
+> DECIMAL(2.1e-1)

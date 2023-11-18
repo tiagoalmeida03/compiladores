@@ -1,0 +1,18 @@
+0a1,8
+> CHRLIT('A')
+> CHRLIT(')')
+> CHRLIT('|')
+> CHRLIT('?')
+> CHRLIT('z')
+> CHRLIT('9')
+> CHRLIT('\n')
+> CHRLIT('\t')
+1a10
+> CHRLIT('\\')
+9a19,24
+> CHRLIT('\'')
+> CHRLIT('\"')
+> CHRLIT('\0')
+> CHRLIT('\10')
+> CHRLIT('\157')
+> CHRLIT('	')

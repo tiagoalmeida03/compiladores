@@ -1,0 +1,15 @@
+0a1,6
+> MUL
+> DIV
+> IDENTIFIER(isto_esta_sem_par)
+> IDENTIFIER(no_meio_de_2)
+> IDENTIFIER(begin)
+> IDENTIFIER(end)
+1a8,12
+> IDENTIFIER(a)
+> IDENTIFIER(f)
+> DIV
+> IDENTIFIER(h)
+> DIV
+2a14
+> IDENTIFIER(n)

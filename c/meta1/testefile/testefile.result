@@ -1,0 +1,6 @@
+Line 3, column 24: invalid char constant ('ii')
+Line 4, column 16: unterminated char constant
+Line 16, column 2: invalid char constant ('')
+Line 16, column 10: invalid char constant (' \'  ')
+Line 16, column 17: invalid char constant ('')
+Line 21, column 1: unterminated comment

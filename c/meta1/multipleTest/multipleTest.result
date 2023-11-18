@@ -1,0 +1,8 @@
+Line 3, column 11: invalid char constant ('\'<=')
+Line 4, column 11: unterminated char constant
+Line 7, column 10: unrecognized character (")
+Line 7, column 26: unrecognized character (Ã)
+Line 7, column 27: unrecognized character (©)
+Line 12, column 2: unterminated char constant
+Line 13, column 7: invalid char constant ('')
+Line 15, column 2: invalid char constant ('{d')

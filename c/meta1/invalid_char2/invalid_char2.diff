@@ -1,0 +1,40 @@
+0a1,2
+> IDENTIFIER(o)
+> RESERVED(--)
+1a4
+> IDENTIFIER(asdasd)
+2a6
+> IDENTIFIER(asdasd)
+3a8,10
+> IDENTIFIER(asdasd)
+> CHRLIT('\\')
+> IDENTIFIER(asdasd)
+4a12
+> CHRLIT('\'')
+5a14,18
+> CHRLIT('\'')
+> IDENTIFIER(asdasd)
+> CHRLIT('\'')
+> COMMA
+> IDENTIFIER(asd)
+6a20
+> IDENTIFIER(asdas)
+12a27,28
+> IDENTIFIER(sd)
+> IDENTIFIER(asd)
+13a30
+> RESERVED(--)
+15a33
+> IDENTIFIER(sdasd)
+24a43
+> CHRLIT('\'')
+31a51
+> CHRLIT('\\')
+32a53
+> IDENTIFIER(asdaso)
+34a56
+> IDENTIFIER(asdaso)
+37a60
+> COMMA
+40a64
+> CHRLIT('\\')

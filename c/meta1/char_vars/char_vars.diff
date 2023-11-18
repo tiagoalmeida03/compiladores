@@ -1,0 +1,14 @@
+1a2
+> CHRLIT('\\')
+4a6
+> CHRLIT('\\')
+16a19,20
+> CHRLIT('\n')
+> CHRLIT('\'')
+17a22
+> CHRLIT('\n')
+20a26
+> CHRLIT(' ')
+23a30,31
+> CHRLIT('"')
+> CHRLIT('\"')
