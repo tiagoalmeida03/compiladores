@@ -10,7 +10,7 @@ NL \n|\r|\r\n
 
 %{
 #include <ctype.h>
-#include <stdio.h>
+#include <stdio.h> //test
 #include <stdbool.h>
 
 int line_num = 1, column_num = 1, un_line = 0, un_column = 0;
