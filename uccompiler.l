@@ -42,7 +42,7 @@ void unt_char(int line, int column) {
 %x COMMENT
 %%
 
-"char"                    { if(myFlag) printf("CHAR\n"); count(yytext); }
+"char"                    { if(myFlag) printf("CHAR\n"); count(yytext); }  /* Comment just cause I can */
 "if"                      { if(myFlag) printf("IF\n"); count(yytext); }
 "else"                    { if(myFlag) printf("ELSE\n"); count(yytext); }
 "while"                   { if(myFlag) printf("WHILE\n"); count(yytext); }
