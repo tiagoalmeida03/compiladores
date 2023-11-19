@@ -1,12 +1,16 @@
+/*AUTORES*/
+/*TIAGO NUNO M. C. L. DE ALMEIDA - 2021221615*/
+/*JOÃO FILIPE GASPAR DOS SANTOS - 2021217215*/
+
 %{
 #include "ast.h"
-#include <stdlib.h>
+#include <stdlib.h> 
 
 int yylex(void);
 void yyerror(char *);
 
 struct node *program;
-struct node *type_spec;
+struct node *TypeSpec_spec;
 struct node_list *aux;
 %}
 
@@ -15,37 +19,34 @@ struct node_list *aux;
     struct node *node;
 }
 
-%token LBRACE RBRACE LPAR RPAR SEMI
-%token CHAR INT DOUBLE VOID SHORT
-%token ASSIGN COMMA PLUS MINUS MUL DIV MOD
-%token EQ NE GT GE LT LE AND OR
-%token BITWISEAND BITWISEOR BITWISEXOR NOT
-%token IF ELSE WHILE RETURN RESERVED
+%token CHAR IF ELSE WHILE INT
+%token SHORT DOUBLE RETURN VOID RESERVED
+%token BITWISEAND BITWISEOR BITWISEXOR
+%token AND ASSIGN MUL COMMA DIV
+%token EQ GE GT LBRACE LE LPAR LT
+%token MINUS MOD NE NOT OR PLUS
+%token RBRACE RPAR SEMI
 
 %token<lexeme> IDENTIFIER CHRLIT DECIMAL NATURAL
 
 %type<node> Program
-%type<node> FuncAndDeclarations
-%type<node> FuncDefinition
-%type<node> FuncBody 
-%type<node> Type
-%type<node> FuncDeclaration
+%type<node> FunctionsAndDeclarations
+%type<node> FunctionsDefinition
+%type<node> FunctionsBody 
+%type<node> TypeSpec
+%type<node> FunctionsDeclaration
 %type<node> ParamDeclaration
 %type<node> Declarator
 %type<node> DeclaratorList
 %type<node> Declaration
-%type<node> FuncDeclarator
+%type<node> FunctionsDeclarator
 %type<node> ParamList
-%type<node> DeclarationsAndStats 
-%type<node> StatList
-%type<node> Stat
-%type<node> StatError
+%type<node> DeclarationsAndStatements 
+%type<node> StatementList
+%type<node> Statement
+%type<node> StatementError
 %type<node> Expr
 %type<node> ExprList
-%type<node> ExprCall
-
-%nonassoc LOW
-%nonassoc ELSE
 
 %left COMMA
 %right ASSIGN
@@ -54,107 +55,114 @@ struct node_list *aux;
 %left BITWISEOR
 %left BITWISEXOR
 %left BITWISEAND
-%left EQ NE GT GE LT LE
+%left NE EQ
+%left GT GE LT LE
 %left PLUS MINUS
-%left MUL DIV MOD
+%left MUL DIV MOD 
 %right NOT
+%left RPAR LPAR 
+
+%nonassoc LOW
+%nonassoc ELSE
 
 %%
-Program: 
-        FuncAndDeclarations                                        { ; }
+Program:                                                    
+        FunctionsAndDeclarations                                             { ; }
         ;
 
-FuncAndDeclarations:
-        FuncAndDeclarations FuncDefinition                         { ; }
-        | FuncAndDeclarations FuncDeclaration                      { ; }
-        | FuncAndDeclarations Declaration                          { ; }
-        | FuncDefinition                                           { ; }
-        | FuncDeclaration                                          { ; }
-        | Declaration                                              { ; }
+FunctionsAndDeclarations:
+        FunctionsDefinition FunctionsAndDeclarations                         { ; }
+        | FunctionsDeclaration FunctionsAndDeclarations                      { ; }
+        | Declaration FunctionsAndDeclarations                               { ; }
+        | FunctionsDefinition                                                { ; }
+        | FunctionsDeclaration                                               { ; }
+        | Declaration                                                        { ; }
         ;
 
-Type:
-        CHAR                                                       { ; }
-        | INT                                                      { ; }
-        | DOUBLE                                                   { ; }
-        | VOID                                                     { ; }
-        | SHORT                                                    { ; }
+TypeSpec:
+        CHAR                                                                 { ; }
+        | INT                                                                { ; }
+        | DOUBLE                                                             { ; }
+        | VOID                                                               { ; }
+        | SHORT                                                              { ; }
         ;
 
-FuncDefinition: 
-        Type FuncDeclarator FuncBody                               { ; }
+FunctionsDefinition: 
+        TypeSpec FunctionsDeclarator FunctionsBody                           { ; }
         ;
 
-FuncBody:
-        LBRACE DeclarationsAndStats RBRACE                         { ; }
-        | LBRACE  RBRACE                                           { ; }
+FunctionsBody:
+        LBRACE DeclarationsAndStatements RBRACE                              { ; }
+        | LBRACE  RBRACE                                                     { ; }
         ;
 
-DeclarationsAndStats:
-        DeclarationsAndStats Declaration                           { ; }
-        | DeclarationsAndStats Stat                                { ; }
-        | Declaration                                              { ; }
-        | Stat                                                     { ; }
+DeclarationsAndStatements:
+        DeclarationsAndStatements Declaration                                { ; }
+        | DeclarationsAndStatements Statement                                { ; }
+        | Declaration                                                        { ; }
+        | Statement                                                          { ; }
         ;
 
-FuncDeclaration:
-        Type FuncDeclarator SEMI                                   { ; }
+FunctionsDeclaration:
+        TypeSpec FunctionsDeclarator SEMI                                    { ; }
         ;
 
-FuncDeclarator:
-        IDENTIFIER LPAR ParamList RPAR                             { ; }
+FunctionsDeclarator:
+        IDENTIFIER LPAR ParamList RPAR                                       { ; }
         ;
 
 ParamList:
-        ParamList COMMA ParamDeclaration                           { ; }
-        | ParamDeclaration                                         { ; }
+        ParamList COMMA ParamDeclaration                                     { ; }
+        | ParamDeclaration                                                   { ; }
         ;
 
 ParamDeclaration:
-        Type IDENTIFIER                                            { ; }
-        | Type                                                     { ; }
+        TypeSpec IDENTIFIER                                                  { ; }
+        | TypeSpec                                                           { ; }
         ;
 
 Declaration:
-        Type DeclaratorList SEMI                                   { ; }
-        | error SEMI                                               { ; }
+        TypeSpec DeclaratorList SEMI                                         { ; }
+        | error SEMI                                                         { ; }
         ;
 
 DeclaratorList:
-        DeclaratorList COMMA Declarator                            { ; }
-        | Declarator                                               { ; }
+        DeclaratorList COMMA Declarator                                      { ; }
+        | Declarator                                                         { ; }
         ;
 
 Declarator:
-        IDENTIFIER                                                 { ; }
-        | IDENTIFIER ASSIGN ExprList                               { ; }
+        IDENTIFIER                                                           { ; }
+        | IDENTIFIER ASSIGN ExprList                                         { ; }
         ;
 
-StatList:
-        StatList StatError                                         { ; }
-        | StatError                                                { ; }
+StatementList:
+        StatementList StatementError                                        { ; }
+        | StatementError                                                    { ; }
         ;
 
-StatError: Stat                                                    { ; }              
-        | error SEMI                                               { ; }
+StatementError: Statement                                                   { ; }              
+        | error SEMI                                                        { ; }
         ;
 
-Stat:
-        ExprList SEMI                                              { ; }
-        | LBRACE StatList RBRACE                                   { ; }
-        | IF LPAR ExprList RPAR Stat %prec LOW                     { ; }
-        | IF LPAR ExprList RPAR Stat ELSE Stat                     { ; }
-        | WHILE LPAR ExprList RPAR Stat                            { ; }
-        | RETURN ExprList SEMI                                     { ; }
-        | RETURN SEMI                                              { ; }
-        | SEMI                                                     { ; }
-        | LBRACE error RBRACE                                      { ; }
+Statement:
+        ExprList SEMI                                                       { ; }
+        | LBRACE StatementList RBRACE                                       { ; }
+        | IF LPAR ExprList RPAR StatementError           %prec LOW                            { ; }
+        | IF LPAR ExprList RPAR StatementError ELSE StatementError                    { ; }
+        | WHILE LPAR ExprList RPAR StatementError                                { ; }
+        | RETURN ExprList SEMI                                              { ; }
+        | RETURN SEMI                                                       { ; }
+        | SEMI                                                              { ; }
+        | LBRACE error RBRACE                                               { ; }
+        | LBRACE RBRACE                                                     { ; }
         ;
 
 ExprList:
         ExprList COMMA Expr                                        { ; }
         | Expr                                                     { ; }
         ;
+
 
 ExprCall:
         ExprCall COMMA Expr                                        { ; }
@@ -174,11 +182,14 @@ Expr:
         | Expr LT Expr                                             { ; }
         | Expr LE Expr                                             { ; }
         | Expr ASSIGN Expr                                         { ; }
+        | MINUS Expr NOT                                           { ; }
+        | PLUS Expr NOT                                            { ; }
+        | Expr MUL Expr                                            { ; }
+        | Expr MOD Expr                                            { ; }
+        | Expr DIV Expr                                            { ; }
         | Expr PLUS Expr                                           { ; }
         | Expr MINUS Expr                                          { ; }
-        | Expr MUL Expr                                            { ; }
-        | Expr DIV Expr                                            { ; }
-        | Expr MOD Expr                                            { ; }
+        | IDENTIFIER LPAR RPAR                                     { ; }
         | MINUS Expr %prec NOT                                     { ; }
         | PLUS Expr %prec NOT                                      { ; }
         | NOT Expr                                                 { ; }

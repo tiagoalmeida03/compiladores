@@ -1,0 +1,6 @@
+
+chmod +x isolate_folders.sh
+./isolate_folders.sh
+
+chmod +x test_all.sh
+./test_all.sh
