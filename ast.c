@@ -3,7 +3,13 @@
 #include "ast.h"
 
 // create a node of a given category with a given lexical symbol
-char *category_char[]={ "Program", "FuncDefinition", "FuncBody", "FuncDeclaration", "Call", "ParamList", "ParamDeclaration", "Declaration", "Identifier", "Store", "If", "While", "Return", "Add", "Sub", "Mul", "Div", "Mod", "Or", "And", "BitWiseOr", "BitWiseAnd", "BitWiseXor", "Plus", "Minus", "Not", "Eq", "Ne", "Le", "Ge", "Lt", "Gt", "Char", "Decimal", "Int", "Void", "Short", "Double", "Natural", "ChrLit", "Null", "StatList", "Comma"};
+char *category_char[]={ "Program", "FuncDefinition", "FuncBody", "FuncDeclaration", 
+                        "Call", "ParamList", "ParamDeclaration", "Declaration", 
+                        "Identifier", "Store", "If", "While", "Return", "Add", "Sub", 
+                        "Mul", "Div", "Mod", "Or", "And", "BitWiseOr", "BitWiseAnd", 
+                        "BitWiseXor", "Plus", "Minus", "Not", "Eq", "Ne", "Le", "Ge", 
+                        "Lt", "Gt", "Char", "Decimal", "Int", "Void", "Short", "Double", 
+                        "Natural", "ChrLit", "Null", "StatList", "Comma"};
 
 struct node *newnode(enum category category, char *token) {
     struct node *new = malloc(sizeof(struct node));

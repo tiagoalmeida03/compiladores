@@ -4,7 +4,7 @@ run: yacc lex gcc clean
 	./lexer -t < test.in
 
 yacc: uccompiler.y
-	yacc -d -v -t -g uccompiler.y
+	yacc -d -v -t -g -Wcounterexamples --report=all uccompiler.y
 
 lex: uccompiler.l
 	lex uccompiler.l
