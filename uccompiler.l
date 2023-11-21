@@ -18,6 +18,8 @@ NL \n|\r|\r\n
 #define YY_USER_ACTION { syn_line = line; syn_column = column; column += yyleng; }
 #define PASS_TOKEN() yylval.lexeme = strdup(yytext);
 
+extern int yyparse();
+
 int un_line = 1, un_column = 1, line = 1, column = 1, syn_line = 1, syn_column = 1, errors = 0;
 int myFlag = 0;
 
@@ -32,6 +34,11 @@ void unt_comment(int line, int column) {
 void unt_char(int line, int column) {
     printf("Line %d, column %d: unterminated char constant\n", line, column);
 }
+
+void inv_char(int line, int column, char character) {
+    printf("Line %d, column %d: invalid char constant (%c)\n", line, column, character);
+}
+
 extern struct node *program;
 
 %}
@@ -96,10 +103,10 @@ auto|break|case|const|continue|inline|define|default|do|long|register|restrict|s
 \'({CHARACCEPT})\'                                            { if(myFlag) printf("CHRLIT(%s)\n", yytext); PASS_TOKEN(); if(myFlag != 1) return CHRLIT; }
 
     /* INVALID CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*'                                  { printf("Line %d, column %d: invalid char constant (%s)\n", line, column-yyleng, yytext); }
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                { inv_char(line, column-yyleng, yytext[0]); }
 
     /* UNTERMINATED CHAR CONSTANTS */
-'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))*                       { unt_char(line, column-yyleng); line+=1; column=1; syn_column=column; syn_line=line; }
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))*                     { unt_char(line, column-yyleng); line+=1; column=1; syn_column=column; syn_line=line; }
 
     /* COMMENTS */
 "//".*                      {;}

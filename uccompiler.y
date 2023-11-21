@@ -159,47 +159,47 @@ Statement:
         ;
 
 ExprList:
-        ExprList COMMA Expr                                        { ; }
-        | Expr                                                     { ; }
+        ExprList COMMA Expr                                                 { ; }
+        | Expr                                                              { ; }
         ;
 
 
 ExprCall:
-        ExprCall COMMA Expr                                        { ; }
-        | Expr                                                     { ; }
+        ExprCall COMMA Expr                                                 { ; }
+        | Expr                                                              { ; }
         ;
 
 Expr:
-        Expr OR Expr                                               { ; }
-        | Expr AND Expr                                            { ; }
-        | Expr BITWISEOR Expr                                      { ; }
-        | Expr BITWISEXOR Expr                                     { ; }
-        | Expr BITWISEAND Expr                                     { ; }
-        | Expr EQ Expr                                             { ; }
-        | Expr NE Expr                                             { ; }
-        | Expr GT Expr                                             { ; }
-        | Expr GE Expr                                             { ; }
-        | Expr LT Expr                                             { ; }
-        | Expr LE Expr                                             { ; }
-        | Expr ASSIGN Expr                                         { ; }
-        | MINUS Expr NOT                                           { ; }
-        | PLUS Expr NOT                                            { ; }
-        | Expr MUL Expr                                            { ; }
-        | Expr MOD Expr                                            { ; }
-        | Expr DIV Expr                                            { ; }
-        | Expr PLUS Expr                                           { ; }
-        | Expr MINUS Expr                                          { ; }
-        | IDENTIFIER LPAR RPAR                                     { ; }
-        | MINUS Expr %prec NOT                                     { ; }
-        | PLUS Expr %prec NOT                                      { ; }
-        | NOT Expr                                                 { ; }
-        | IDENTIFIER LPAR ExprCall RPAR                            { ; }
-        | LPAR ExprList RPAR                                       { ; }
-        | IDENTIFIER                                               { ; }
-        | CHRLIT                                                   { ; }
-        | DECIMAL                                                  { ; }
-        | NATURAL                                                  { ; }
-        | IDENTIFIER LPAR error RPAR                               { ; }
-        | LPAR error RPAR                                          { ; }
+        Expr OR Expr                                                        { ; }
+        | Expr AND Expr                                                     { ; }
+        | Expr BITWISEOR Expr                                               { ; }
+        | Expr BITWISEXOR Expr                                              { ; }
+        | Expr BITWISEAND Expr                                              { ; }
+        | Expr EQ Expr                                                      { ; }
+        | Expr NE Expr                                                      { ; }
+        | Expr GT Expr                                                      { ; }
+        | Expr GE Expr                                                      { ; }
+        | Expr LT Expr                                                      { ; }
+        | Expr LE Expr                                                      { ; }
+        | Expr ASSIGN Expr                                                  { ; }
+        | MINUS Expr NOT                                                    { ; }
+        | PLUS Expr NOT                                                     { ; }
+        | Expr MUL Expr                                                     { ; }
+        | Expr MOD Expr                                                     { ; }
+        | Expr DIV Expr                                                     { ; }
+        | Expr PLUS Expr                                                    { ; }
+        | Expr MINUS Expr                                                   { ; }
+        | IDENTIFIER LPAR RPAR                                              { ; }
+        | MINUS Expr %prec NOT                                              { ; }
+        | PLUS Expr %prec NOT                                               { ; }
+        | NOT Expr                                                          { ; }
+        | IDENTIFIER LPAR ExprCall RPAR                                     { ; }
+        | LPAR ExprList RPAR                                                { ; }
+        | IDENTIFIER                                                        { ; }
+        | CHRLIT                                                            { ; }
+        | DECIMAL                                                           { ; }
+        | NATURAL                                                           { ; }
+        | IDENTIFIER LPAR error RPAR                                        { ; }
+        | LPAR error RPAR                                                   { ; }
         ;
 %%
