@@ -126,7 +126,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 16 "uccompiler.y"
+#line 17 "uccompiler.y"
 { 
     char *lexeme;
     struct node *node;

@@ -10,6 +10,7 @@ int yylex(void);
 void yyerror(char *);
 
 struct node *program;
+struct node *kind;
 struct node_list *aux;
 %}
 
@@ -74,64 +75,59 @@ Program:
 FunctionsAndDeclarations:
         FunctionsAndDeclarations FunctionsDefinition                         { addChild($$, $2); }
         | FunctionsAndDeclarations FunctionsDeclaration                      { addChild($$, $2); }
-        | FunctionsAndDeclarations Declaration                               { addChild($$, $2); }
-        | FunctionsDefinition                                                { $$ = newNode(NullN, NULL); 
+        | FunctionsAndDeclarations Declaration                               { while(($2 -> children = $2 -> children -> next) != NULL)
+                                                                               addChild($$, $2 -> children -> node); }
+        | FunctionsDefinition                                                { $$ = program = newNode(Program, NULL); 
                                                                                addChild($$, $1); }
-        | FunctionsDeclaration                                               { $$ = newNode(NullN, NULL); 
+        | FunctionsDeclaration                                               { $$ = program = newNode(Program, NULL); 
                                                                                addChild($$, $1); }
-        | Declaration                                                        { $$ = newNode(NullN, NULL);
-                                                                               addChild($$, $1); }
+        | Declaration                                                        { $1 -> category = Program; $$ = program = $1; }
         ;
 
 TypeSpec:
-        CHAR                                                                 { $$ = newNode(Char, NULL); }
-        | INT                                                                { $$ = newNode(Int, NULL); }
-        | DOUBLE                                                             { $$ = newNode(Double, NULL); }
-        | VOID                                                               { $$ = newNode(Void, NULL); }
-        | SHORT                                                              { $$ = newNode(Short, NULL); }
+        CHAR                                                                 { $$ = kind = newNode(Char, NULL); }
+        | INT                                                                { $$ = kind = newNode(Int, NULL); }
+        | DOUBLE                                                             { $$ = kind = newNode(Double, NULL); }
+        | VOID                                                               { $$ = kind = newNode(Void, NULL); }
+        | SHORT                                                              { $$ = kind = newNode(Short, NULL); }
         ;
 
 FunctionsDefinition: 
         TypeSpec FunctionsDeclarator FunctionsBody                           { $$ = newNode(FuncDefinition, NULL); 
                                                                                addChild($$, $1); 
-                                                                               addChild($$, $2); 
+                                                                               while(($3 -> children = $3 -> children -> next) != NULL)
+                                                                                  addChild($$, $3 -> children -> node); 
                                                                                addChild($$, $3); }
         ;
 
 FunctionsBody:
-        LBRACE DeclarationsAndStatements RBRACE                              { $$ = newNode(FuncBody, NULL); 
-                                                                               addChild($$, $2); }
+        LBRACE DeclarationsAndStatements RBRACE                              { $$ = $2; }
         | LBRACE  RBRACE                                                     { $$ = newNode(FuncBody, NULL); }
         ;
 
 DeclarationsAndStatements:
-        DeclarationsAndStatements Declaration                                { $$ = newNode(DeclarationsAndStatements, NULL); 
-                                                                               addChild($$, $1); 
-                                                                               addChild($$, $2); }
-        | DeclarationsAndStatements Statement                                { $$ = newNode(DeclarationsAndStatements, NULL); 
-                                                                               addChild($$, $1); 
-                                                                               addChild($$, $2); }
-        | Declaration                                                        { $$ = $1; }
-        | Statement                                                          { $$ = $1; }
+        DeclarationsAndStatements Declaration                                { while(($2 -> children = $2 -> children -> next) != NULL)
+                                                                                addChild($$, $2 -> children -> node); }
+        | DeclarationsAndStatements Statement                                { if($2)addChild($$, $2); }
+        | Declaration                                                        { $$ = $1; $1 -> category = FuncBody; }
+        | Statement                                                          { $$ = newNode(FuncBody, NULL); if($1)addChild($$, $1); }
         ;
 
 FunctionsDeclaration:
-        TypeSpec FunctionsDeclarator SEMI                                    { $$ = newNode(FuncDeclaration, NULL); 
-                                                                               addChild($$, $1); 
-                                                                               addChild($$, $2); }
+        TypeSpec FunctionsDeclarator SEMI                                    { $2->category = FuncDeclaration; $$ = $2;
+                                                                                addChildren($$, $1); }
         ;
 
 FunctionsDeclarator:
-        IDENTIFIER LPAR ParamList RPAR                                       { $$ = newNode(FuncDeclrator, NULL); 
+        IDENTIFIER LPAR ParamList RPAR                                       { $$ = newNode(NullN, NULL); 
                                                                                addChild($$, newNode(Identifier, $1)); 
                                                                                addChild($$, $3); }
         ;
 
 ParamList:
-        ParamList COMMA ParamDeclaration                                     { $$ = newNode(ParamList, NULL); 
-                                                                               addChild($$, $1); 
-                                                                               addChild($$, $3); }
-        | ParamDeclaration                                                   { $$ = $1; }
+        ParamList COMMA ParamDeclaration                                     { addChild($$, $3); }
+        | ParamDeclaration                                                   { $$ = newNode(ParamList, NULL);
+                                                                                addChild($$, $1); }
         ;
 
 ParamDeclaration:
@@ -143,10 +139,8 @@ ParamDeclaration:
         ;
 
 Declaration:
-        TypeSpec DeclaratorList SEMI                                         { $$ = newNode(Declaration, NULL); 
-                                                                               addChild($$, $1); 
-                                                                               addChildren($$, $2); }
-        | error SEMI                                                         { $$ = newNode(Null, NULL); }
+        TypeSpec DeclaratorList SEMI                                         { $$ = $2; }
+        | error SEMI                                                         { $$ = newNode(NullN, NULL); }
         ;
 
 DeclaratorList:
@@ -155,14 +149,18 @@ DeclaratorList:
         ;
 
 Declarator:
-        IDENTIFIER                                                           { $$ = newNode(Identifier, $1); }
-        | IDENTIFIER ASSIGN ExprList                                         { $$ = newNode(Identifier, $1); 
+        IDENTIFIER                                                           { $$ = newNode(Declaration, NULL);
+                                                                               addChild($$, kind);
+                                                                               addChild($$, newNode(Identifier, $1)); }
+        | IDENTIFIER ASSIGN ExprList                                         { $$ = newNode(Declaration, NULL);
+                                                                               addChild($$, kind);
+                                                                               addChild($$, newNode(Identifier, $1));
                                                                                addChild($$, $3); }
         ;
 
 StatementList:
-        StatementList StatementError                                        { $$ = $1; addChild($$, $2); }
-        | StatementError                                                    { $$ = newNode(StatList, NULL); addChild($$, $1); }
+        StatementList StatementError                                        { if($2)addChild($$, $2); }
+        | StatementError                                                    { $$ = newNode(StatList, NULL); if($1)addChild($$, $1); }
         ;
 
 StatementError: Statement                                                   { $$ = $1; }              
@@ -171,12 +169,12 @@ StatementError: Statement                                                   { $$
 
 Statement:
         ExprList SEMI                                                       { $$ = $1; }
-        | LBRACE StatementList RBRACE                                       { $$ = $2; }
+        | LBRACE StatementList RBRACE                                       { $$ = newNode(NullN, NULL); 
+                                                                               addChildren($$, $2); }
         | IF LPAR ExprList RPAR Statement %prec LOW                         { $$ = newNode(If, NULL); 
                                                                                addChild($$, $3); 
-                                                                               addChild($$, $5); 
-                                                                               addChild($$, newNode(Null, NULL)); }
-        | IF LPAR ExprList RPAR Statement ELSE Statement                    { $$ = newNode(If, NULL); 
+                                                                               addChild($$, $5); }
+        | IF LPAR ExprList RPAR Statement ELSE Statement                    { $$ = newNode(IfElse, NULL); 
                                                                                addChild($$, $3); 
                                                                                addChild($$, $5); 
                                                                                addChild($$, $7); }
@@ -186,7 +184,7 @@ Statement:
         | RETURN ExprList SEMI                                              { $$ = newNode(Return, NULL); 
                                                                                addChild($$, $2); }
         | RETURN SEMI                                                       { $$ = newNode(Return, NULL); }
-        | SEMI                                                              { newNode(NullN, NULL); }
+        | SEMI                                                              { $$ = newNode(NullN, NULL); }
         | LBRACE error RBRACE                                               { $$ = newNode(Null, NULL); }
         | LBRACE RBRACE                                                     { $$ = newNode(Null, NULL); }
         ;
