@@ -67,7 +67,7 @@ struct node_list *aux;
 
 %%
 Program:
-        FunctionsAndDeclarations                                             { $$ = program = newnode(Program, NULL); 
+        FunctionsAndDeclarations                                             { $$ = program = newNode(Program, NULL); 
                                                                                addChildren($$, $1); }
         ;
 
@@ -76,11 +76,11 @@ FunctionsAndDeclarations:
         | FunctionsAndDeclarations FunctionsDeclaration                      { addChild($$, $2); }
         | FunctionsAndDeclarations Declaration                               { addChild($$, $2); }
         | FunctionsDefinition                                                { $$ = newNode(NullN, NULL); 
-                                                                               addchild($$, $1); }
+                                                                               addChild($$, $1); }
         | FunctionsDeclaration                                               { $$ = newNode(NullN, NULL); 
-                                                                               addchild($$, $1); }
+                                                                               addChild($$, $1); }
         | Declaration                                                        { $$ = newNode(NullN, NULL);
-                                                                               addchild($$, $1); }
+                                                                               addChild($$, $1); }
         ;
 
 TypeSpec:
@@ -105,8 +105,12 @@ FunctionsBody:
         ;
 
 DeclarationsAndStatements:
-        DeclarationsAndStatements Declaration                                { $$ = $1; addBrother($$, $2); }
-        | DeclarationsAndStatements Statement                                { $$ = $1; addBrother($$, $2); }
+        DeclarationsAndStatements Declaration                                { $$ = newNode(DeclarationsAndStatements, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, $2); }
+        | DeclarationsAndStatements Statement                                { $$ = newNode(DeclarationsAndStatements, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, $2); }
         | Declaration                                                        { $$ = $1; }
         | Statement                                                          { $$ = $1; }
         ;
@@ -124,7 +128,9 @@ FunctionsDeclarator:
         ;
 
 ParamList:
-        ParamList COMMA ParamDeclaration                                     { $$ = $1; addBrother($$, $3); }
+        ParamList COMMA ParamDeclaration                                     { $$ = newNode(ParamList, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, $3); }
         | ParamDeclaration                                                   { $$ = $1; }
         ;
 
