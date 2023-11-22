@@ -182,13 +182,13 @@ Expr:
         | Expr LT Expr                                             { ; }
         | Expr LE Expr                                             { ; }
         | Expr ASSIGN Expr                                         { ; }
-        | MINUS Expr NOT                                           { ; }
-        | PLUS Expr NOT                                            { ; }
         | Expr MUL Expr                                            { ; }
         | Expr MOD Expr                                            { ; }
         | Expr DIV Expr                                            { ; }
         | Expr PLUS Expr                                           { ; }
         | Expr MINUS Expr                                          { ; }
+        | MINUS Expr NOT                                           { ; }
+        | PLUS Expr NOT                                            { ; }
         | IDENTIFIER LPAR RPAR                                     { ; }
         | MINUS Expr %prec NOT                                     { ; }
         | PLUS Expr %prec NOT                                      { ; }

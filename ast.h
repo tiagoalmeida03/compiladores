@@ -6,7 +6,7 @@ enum category { Program, FuncDefinition, FuncBody, FuncDeclaration, Call,
                 If, While, Return, Add, Sub, Mul, Div, Mod, Or, And, BitWiseOr, 
                 BitWiseAnd, BitWiseXor, Plus, Minus, Not, Eq, Ne, Le, Ge, Lt, 
                 Gt, Char, Decimal, Int, Void, Short, Double, Natural, Chrlit, 
-                Null, StatList, Comma};
+                Null, StatList, Comma, NullN };
 
 
 typedef struct node {

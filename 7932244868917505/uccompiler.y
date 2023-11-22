@@ -56,6 +56,7 @@ struct node_list *aux;
 %token<lexeme> DECIMAL
 %token<lexeme> NATURAL
 
+%type<node> Program
 %type<node> FuncAndDeclarations
 %type<node> FuncDefinition
 %type<node> FuncBody 
@@ -91,9 +92,9 @@ struct node_list *aux;
 %left MUL DIV MOD
 %right NOT
 %%
-/* Program: 
+Program: 
         FuncAndDeclarations                                        { $$ = program = newNode(Program, NULL); }
-        ; */
+        ;
 
 FuncAndDeclarations:
         FuncAndDeclarations FuncDefinition                         { addChild($$, $2); }
