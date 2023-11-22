@@ -136,6 +136,7 @@ int main(int argc, char **argv) {
         }
     }else{
         yyparse();
+        show(program, 0);
     }
     return 0;
 }

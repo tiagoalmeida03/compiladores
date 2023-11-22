@@ -66,39 +66,42 @@ struct node_list *aux;
 %nonassoc ELSE
 
 %%
-Program:                                                    
+Program:
         FunctionsAndDeclarations                                             { $$ = program = newnode(Program, NULL); 
-                                                                               addchild($$, $1); }
+                                                                               addChildren($$, $1); }
         ;
 
 FunctionsAndDeclarations:
-        FunctionsDefinition FunctionsAndDeclarations                         { $$ = $1; addBrother($$, $2); }
-        | FunctionsDeclaration FunctionsAndDeclarations                      { $$ = $1; addBrother($$, $2); }
-        | Declaration FunctionsAndDeclarations                               { $$ = $1; addBrother($$, $2); }
-        | FunctionsDefinition                                                { $$ = $1; }
-        | FunctionsDeclaration                                               { $$ = $1; }
-        | Declaration                                                        { $$ = $1; }
+        FunctionsAndDeclarations FunctionsDefinition                         { addChild($$, $2); }
+        | FunctionsAndDeclarations FunctionsDeclaration                      { addChild($$, $2); }
+        | FunctionsAndDeclarations Declaration                               { addChild($$, $2); }
+        | FunctionsDefinition                                                { $$ = newNode(NullN, NULL); 
+                                                                               addchild($$, $1); }
+        | FunctionsDeclaration                                               { $$ = newNode(NullN, NULL); 
+                                                                               addchild($$, $1); }
+        | Declaration                                                        { $$ = newNode(NullN, NULL);
+                                                                               addchild($$, $1); }
         ;
 
 TypeSpec:
-        CHAR                                                                 { $$ = newnode(Char, $1); }
-        | INT                                                                { $$ = newnode(Int, $1); }
-        | DOUBLE                                                             { $$ = newnode(Double, $1); }
-        | VOID                                                               { $$ = newnode(Void, $1); }
-        | SHORT                                                              { $$ = newnode(Short, $1); }
+        CHAR                                                                 { $$ = newNode(Char, NULL); }
+        | INT                                                                { $$ = newNode(Int, NULL); }
+        | DOUBLE                                                             { $$ = newNode(Double, NULL); }
+        | VOID                                                               { $$ = newNode(Void, NULL); }
+        | SHORT                                                              { $$ = newNode(Short, NULL); }
         ;
 
 FunctionsDefinition: 
-        TypeSpec FunctionsDeclarator FunctionsBody                           { $$ = newnode(FunctionsDefinition, NULL); 
-                                                                               addchild($$, $1); 
-                                                                               addchild($$, $2); 
-                                                                               addchild($$, $3); }
+        TypeSpec FunctionsDeclarator FunctionsBody                           { $$ = newNode(FuncDefinition, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, $2); 
+                                                                               addChild($$, $3); }
         ;
 
 FunctionsBody:
-        LBRACE DeclarationsAndStatements RBRACE                              { $$ = newnode(FunctionsBody, NULL); 
-                                                                               addchild($$, $2); }
-        | LBRACE  RBRACE                                                     { $$ = newnode(FunctionsBody, NULL); }
+        LBRACE DeclarationsAndStatements RBRACE                              { $$ = newNode(FuncBody, NULL); 
+                                                                               addChild($$, $2); }
+        | LBRACE  RBRACE                                                     { $$ = newNode(FuncBody, NULL); }
         ;
 
 DeclarationsAndStatements:
@@ -109,15 +112,15 @@ DeclarationsAndStatements:
         ;
 
 FunctionsDeclaration:
-        TypeSpec FunctionsDeclarator SEMI                                    { $$ = newnode(FunctionsDeclaration, NULL); 
-                                                                               addchild($$, $1); 
-                                                                               addchild($$, $2); }
+        TypeSpec FunctionsDeclarator SEMI                                    { $$ = newNode(FuncDeclaration, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, $2); }
         ;
 
 FunctionsDeclarator:
-        IDENTIFIER LPAR ParamList RPAR                                       { $$ = newnode(FunctionsDeclarator, NULL); 
-                                                                               addchild($$, newnode(Identifier, $1)); 
-                                                                               addchild($$, $3); }
+        IDENTIFIER LPAR ParamList RPAR                                       { $$ = newNode(FuncDeclrator, NULL); 
+                                                                               addChild($$, newNode(Identifier, $1)); 
+                                                                               addChild($$, $3); }
         ;
 
 ParamList:
@@ -126,141 +129,142 @@ ParamList:
         ;
 
 ParamDeclaration:
-        TypeSpec IDENTIFIER                                                  { $$ = newnode(ParamDeclaration, NULL); 
-                                                                               addchild($$, $1); 
-                                                                               addchild($$, newnode(Identifier, $2)); }
-        | TypeSpec                                                           { $$ = newnode(ParamDeclaration, NULL); 
-                                                                               addchild($$, $1); }
+        TypeSpec IDENTIFIER                                                  { $$ = newNode(ParamDeclaration, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChild($$, newNode(Identifier, $2)); }
+        | TypeSpec                                                           { $$ = newNode(ParamDeclaration, NULL); 
+                                                                               addChild($$, $1); }
         ;
 
 Declaration:
-        TypeSpec DeclaratorList SEMI                                         { $$ = newnode(Declaration, NULL); 
-                                                                               addchild($$, $1); 
-                                                                               addchild($$, $2); }
-        | error SEMI                                                         { $$ = newnode(Null, NULL); }
+        TypeSpec DeclaratorList SEMI                                         { $$ = newNode(Declaration, NULL); 
+                                                                               addChild($$, $1); 
+                                                                               addChildren($$, $2); }
+        | error SEMI                                                         { $$ = newNode(Null, NULL); }
         ;
 
-DeclaratorList: /*Dúvida cm se mete raiz no 1o mas chama origem recursivamente*/
-        DeclaratorList COMMA Declarator                                      { $$ = $1; addBrother($$, $3); }
-        | Declarator                                                         { $$ = $1; }
+DeclaratorList:
+        DeclaratorList COMMA Declarator                                      { $$ = $1; addChild($$, $3); }
+        | Declarator                                                         { $$ = newNode(NullN, NULL); addChild($$, $1); }
         ;
 
 Declarator:
-        IDENTIFIER                                                           { $$ = newnode(Identifier, $1); }
-        | IDENTIFIER ASSIGN ExprList                                         { $$ = newnode(Identifier, $1); 
-                                                                               addBrother($$, $3); }
+        IDENTIFIER                                                           { $$ = newNode(Identifier, $1); }
+        | IDENTIFIER ASSIGN ExprList                                         { $$ = newNode(Identifier, $1); 
+                                                                               addChild($$, $3); }
         ;
 
 StatementList:
-        StatementList StatementError                                        { $$ = $1; addBrother($$, $2); }
-        | StatementError                                                    { $$ = $1; }
+        StatementList StatementError                                        { $$ = $1; addChild($$, $2); }
+        | StatementError                                                    { $$ = newNode(StatList, NULL); addChild($$, $1); }
         ;
 
 StatementError: Statement                                                   { $$ = $1; }              
-        | error SEMI                                                        { $$ = newnode(Null, NULL); }
+        | error SEMI                                                        { $$ = newNode(Null, NULL); }
         ;
 
 Statement:
         ExprList SEMI                                                       { $$ = $1; }
-        | LBRACE StatementList RBRACE                                       { newnode(StatList, NULL);
-                                                                               addchild($$, $2); }
-        | IF LPAR ExprList RPAR StatementError %prec LOW                    { $$ = newnode(If, NULL); 
-                                                                               addchild($$, $3); 
-                                                                               addchild($$, $5); }
-        | IF LPAR ExprList RPAR StatementError ELSE StatementError          { $$ = newnode(If, NULL); 
-                                                                               addchild($$, $3); 
-                                                                               addchild($$, $5); 
-                                                                               addchild($$, $7); }
-        | WHILE LPAR ExprList RPAR StatementError                           { $$ = newnode(While, NULL); 
-                                                                               addchild($$, $3); 
-                                                                               addchild($$, $5); }
-        | RETURN ExprList SEMI                                              { $$ = newnode(Return, NULL); 
-                                                                               addchild($$, $2); }
-        | RETURN SEMI                                                       { $$ = newnode(Return, NULL); }
-        | SEMI                                                              { newnode(NullN, NULL); }
-        | LBRACE error RBRACE                                               { $$ = newnode(Null, NULL); }
-        | LBRACE RBRACE                                                     { $$ = newnode(Null, NULL); }
+        | LBRACE StatementList RBRACE                                       { $$ = $2; }
+        | IF LPAR ExprList RPAR Statement %prec LOW                         { $$ = newNode(If, NULL); 
+                                                                               addChild($$, $3); 
+                                                                               addChild($$, $5); 
+                                                                               addChild($$, newNode(Null, NULL)); }
+        | IF LPAR ExprList RPAR Statement ELSE Statement                    { $$ = newNode(If, NULL); 
+                                                                               addChild($$, $3); 
+                                                                               addChild($$, $5); 
+                                                                               addChild($$, $7); }
+        | WHILE LPAR ExprList RPAR Statement                                { $$ = newNode(While, NULL); 
+                                                                               addChild($$, $3); 
+                                                                               addChild($$, $5); }
+        | RETURN ExprList SEMI                                              { $$ = newNode(Return, NULL); 
+                                                                               addChild($$, $2); }
+        | RETURN SEMI                                                       { $$ = newNode(Return, NULL); }
+        | SEMI                                                              { newNode(NullN, NULL); }
+        | LBRACE error RBRACE                                               { $$ = newNode(Null, NULL); }
+        | LBRACE RBRACE                                                     { $$ = newNode(Null, NULL); }
         ;
 
 ExprList:
-        ExprList COMMA Expr                                        { $$ = $1; addBrother($$, $3); }
+        ExprList COMMA Expr                                        { $$ = newNode(Comma, NULL); addChild($$, $1); addChild($$, $3);}
         | Expr                                                     { $$ = $1; }
         ;
 
 
 ExprCall:
-        ExprCall COMMA Expr                                        { $$ = $1; addBrother($$, $3); }
-        | Expr                                                     { $$ = $1; }
+        ExprCall COMMA Expr                                        { addChild($$, $3); }
+        | Expr                                                     { $$ = newNode(NullN, NULL); addChild($$, $1); }
         ;
 
 Expr:
-        Expr OR Expr                                               { $$ = newnode(Or, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr AND Expr                                            { $$ = newnode(And, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr BITWISEOR Expr                                      { $$ = newnode(Bitwiseor, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr BITWISEXOR Expr                                     { $$ = newnode(Bitwisexor, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr BITWISEAND Expr                                     { $$ = newnode(Bitwiseand, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr EQ Expr                                             { $$ = newnode(Eq, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr NE Expr                                             { $$ = newnode(Ne, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr GT Expr                                             { $$ = newnode(Gt, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr GE Expr                                             { $$ = newnode(Ge, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr LT Expr                                             { $$ = newnode(Lt, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr LE Expr                                             { $$ = newnode(Le, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr ASSIGN Expr                                         { $$ = newnode(Store, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr MUL Expr                                            { $$ = newnode(Mul, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr MOD Expr                                            { $$ = newnode(Mod, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr DIV Expr                                            { $$ = newnode(Div, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr PLUS Expr                                           { $$ = newnode(Plus, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | Expr MINUS Expr                                          { $$ = newnode(Minus, NULL);
-                                                                     addchild($$, $1); 
-                                                                     addchild($$, $3); }
-        | IDENTIFIER LPAR RPAR                                     { $$ = newnode(Identifier, $1); }
-        | MINUS Expr %prec NOT                                     { $$ = newnode(Minus, NULL);
-                                                                     addchild($$, $2); }
-        | PLUS Expr %prec NOT                                      { $$ = newnode(Plus, NULL);
-                                                                     addchild($$, $2); }
-        | NOT Expr                                                 { $$ = newnode(Not, NULL);
-                                                                     addchild($$, $2); }
-        | IDENTIFIER LPAR ExprCall RPAR                            { $$ = newnode(Call, $1); 
-                                                                     addchild($$, newnode(Identifier, $1));
-                                                                     addchild($$, $3); }
+        Expr OR Expr                                               { $$ = newNode(Or, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr AND Expr                                            { $$ = newNode(And, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr BITWISEOR Expr                                      { $$ = newNode(BitWiseOr, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr BITWISEXOR Expr                                     { $$ = newNode(BitWiseXor, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr BITWISEAND Expr                                     { $$ = newNode(BitWiseAnd, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr EQ Expr                                             { $$ = newNode(Eq, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr NE Expr                                             { $$ = newNode(Ne, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr GT Expr                                             { $$ = newNode(Gt, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr GE Expr                                             { $$ = newNode(Ge, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr LT Expr                                             { $$ = newNode(Lt, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr LE Expr                                             { $$ = newNode(Le, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr ASSIGN Expr                                         { $$ = newNode(Store, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr MUL Expr                                            { $$ = newNode(Mul, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr MOD Expr                                            { $$ = newNode(Mod, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr DIV Expr                                            { $$ = newNode(Div, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr PLUS Expr                                           { $$ = newNode(Plus, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | Expr MINUS Expr                                          { $$ = newNode(Minus, NULL);
+                                                                     addChild($$, $1); 
+                                                                     addChild($$, $3); }
+        | IDENTIFIER LPAR RPAR                                     { $$ = newNode(Call, $1); 
+                                                                     addChild($$, newNode(Identifier, $1)); }
+        | MINUS Expr %prec NOT                                     { $$ = newNode(Minus, NULL);
+                                                                     addChild($$, $2); }
+        | PLUS Expr %prec NOT                                      { $$ = newNode(Plus, NULL);
+                                                                     addChild($$, $2); }
+        | NOT Expr                                                 { $$ = newNode(Not, NULL);
+                                                                     addChild($$, $2); }
+        | IDENTIFIER LPAR ExprCall RPAR                            { $$ = newNode(Call, $1); 
+                                                                     addChild($$, newNode(Identifier, $1));
+                                                                     addChildren($$, $3); }
         | LPAR ExprList RPAR                                       { $$ = $2; }
-        | IDENTIFIER                                               { $$ = newnode(Identifier, $1); }
-        | CHRLIT                                                   { $$ = newnode(Chrlit, $1); }
-        | DECIMAL                                                  { $$ = newnode(Decimal, $1); }
-        | NATURAL                                                  { $$ = newnode(Natural, $1); }
-        | IDENTIFIER LPAR error RPAR                               { $$ = newnode(Identifier, $1); }
-        | LPAR error RPAR                                          { $$ = newnode(Null, NULL); }
+        | IDENTIFIER                                               { $$ = newNode(Identifier, $1); }
+        | CHRLIT                                                   { $$ = newNode(Chrlit, $1); }
+        | DECIMAL                                                  { $$ = newNode(Decimal, $1); }
+        | NATURAL                                                  { $$ = newNode(Natural, $1); }
+        | IDENTIFIER LPAR error RPAR                               { $$ = newNode(Identifier, $1); }
+        | LPAR error RPAR                                          { $$ = newNode(Null, NULL); }
         ;
 %%
