@@ -3,6 +3,7 @@ rm -f uccomp lex.yy.c y.tab.c y.tab.h
 yacc -d -v -t -g --report=all uccompiler.y
 lex uccompiler.l
 cc -o uccomp lex.yy.c y.tab.c ast.c -Wall -Wno-unused-function
+zip uccompiler.zip uccompiler.l uccompiler.y ast.c ast.h
 
 FILE=$1
 if [ -z "$FILE" ]; then
