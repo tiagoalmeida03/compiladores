@@ -160,7 +160,8 @@ Declarator:
 
 StatementList:
         StatementList StatementError                                        { $$ = $1; if($2)addChild($$, $2); }
-        | StatementError                                                    { $$ = newNode(StatList, NULL); if($1)addChild($$, $1); }
+        | StatementError                                                    { $$ = newNode(StatList, NULL); 
+                                                                               if($1)addChild($$, $1); }
         ;
 
 StatementError: Statement                                                   { $$ = $1; }            
@@ -169,7 +170,9 @@ StatementError: Statement                                                   { $$
 
 Statement:
         ExprList SEMI                                                       { $$ = $1; }
-        | LBRACE StatementList RBRACE                                       { if(!$2->children->next){ $$ = NULL; } else if(!$2->children->next->next)$$ = $2->children->next->node; else $$ = $2; }
+        | LBRACE StatementList RBRACE                                       { if(!$2->children->next){ $$ = NULL; } 
+                                                                               else if(!$2->children->next->next) $$ = $2->children->next->node; 
+                                                                               else $$ = $2; }
         | IF LPAR ExprList RPAR Statement %prec LOW                         { $$ = newNode(If, NULL); 
                                                                                addChild($$, $3); 
                                                                                if($5)addChild($$, $5);
