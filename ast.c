@@ -5,11 +5,11 @@
 // create a node of a given category with a given lexical symbol
 char *category_char[]={ "Program", "FuncDefinition", "FuncBody", "FuncDeclaration", 
                         "Call", "ParamList", "ParamDeclaration", "Declaration", 
-                        "Identifier", "Store", "If", "While", "Return", "Add", "Sub", 
-                        "Mul", "Div", "Mod", "Or", "And", "BitWiseOr", "BitWiseAnd", 
+                        "Identifier", "Store", "If", "IfElse", "While", "Return", "Add", 
+                        "Sub", "Mul", "Div", "Mod", "Or", "And", "BitWiseOr", "BitWiseAnd", 
                         "BitWiseXor", "Plus", "Minus", "Not", "Eq", "Ne", "Le", "Ge", 
                         "Lt", "Gt", "Char", "Decimal", "Int", "Void", "Short", "Double", 
-                        "Natural", "ChrLit", "Null", "StatList", "Comma", "NullN" };
+                        "Natural", "ChrLit", "Null", "StatList", "Comma" };
 
 
 

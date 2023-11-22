@@ -522,14 +522,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    71,    71,    76,    77,    78,    80,    82,    84,    88,
-      89,    90,    91,    92,    96,   104,   105,   109,   111,   112,
-     113,   117,   122,   128,   129,   134,   137,   142,   143,   147,
-     148,   152,   155,   162,   163,   166,   167,   171,   172,   174,
-     177,   181,   184,   186,   187,   188,   189,   193,   194,   199,
-     200,   204,   207,   210,   213,   216,   219,   222,   225,   228,
-     231,   234,   237,   240,   243,   246,   249,   252,   255,   257,
-     259,   261,   263,   266,   267,   268,   269,   270,   271,   272
+       0,    71,    71,    76,    77,    78,    79,    81,    83,    88,
+      89,    90,    91,    92,    96,   103,   104,   108,   109,   110,
+     111,   115,   121,   127,   128,   132,   135,   140,   141,   145,
+     146,   150,   154,   162,   163,   166,   167,   171,   172,   173,
+     178,   184,   188,   190,   192,   193,   194,   198,   199,   204,
+     205,   209,   212,   215,   218,   221,   224,   227,   230,   233,
+     236,   239,   242,   245,   248,   251,   254,   257,   260,   262,
+     264,   266,   268,   271,   272,   273,   274,   275,   276,   277
 };
 #endif
 
@@ -1597,25 +1597,25 @@ yyreduce:
 
   case 5:
 #line 78 "uccompiler.y"
-    { while(((yyvsp[(2) - (2)].node) -> children = (yyvsp[(2) - (2)].node) -> children -> next) != NULL)
-                                                                               addChild((yyval.node), (yyvsp[(2) - (2)].node) -> children -> node); }
+    { addChildren((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 6:
-#line 80 "uccompiler.y"
+#line 79 "uccompiler.y"
     { (yyval.node) = program = newNode(Program, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 7:
-#line 82 "uccompiler.y"
+#line 81 "uccompiler.y"
     { (yyval.node) = program = newNode(Program, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 8:
-#line 84 "uccompiler.y"
-    { (yyvsp[(1) - (1)].node) -> category = Program; (yyval.node) = program = (yyvsp[(1) - (1)].node); }
+#line 83 "uccompiler.y"
+    { (yyval.node) = program = newNode(Program, NULL); 
+                                                                               addChildren((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 9:
@@ -1640,124 +1640,124 @@ yyreduce:
 
   case 13:
 #line 92 "uccompiler.y"
-    { (yyval.node) = kind = newNode(Short, NULL); }
+    { (yyval.node) = kind =newNode(Short, NULL); }
     break;
 
   case 14:
 #line 96 "uccompiler.y"
     { (yyval.node) = newNode(FuncDefinition, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
-                                                                               while(((yyvsp[(3) - (3)].node) -> children = (yyvsp[(3) - (3)].node) -> children -> next) != NULL)
-                                                                                  addChild((yyval.node), (yyvsp[(3) - (3)].node) -> children -> node); 
+                                                                               addChildren((yyval.node), (yyvsp[(2) - (3)].node)); 
                                                                                addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 15:
-#line 104 "uccompiler.y"
+#line 103 "uccompiler.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); }
     break;
 
   case 16:
-#line 105 "uccompiler.y"
+#line 104 "uccompiler.y"
     { (yyval.node) = newNode(FuncBody, NULL); }
     break;
 
   case 17:
-#line 109 "uccompiler.y"
-    { while(((yyvsp[(2) - (2)].node) -> children = (yyvsp[(2) - (2)].node) -> children -> next) != NULL)
-                                                                                addChild((yyval.node), (yyvsp[(2) - (2)].node) -> children -> node); }
+#line 108 "uccompiler.y"
+    { addChildren((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 18:
-#line 111 "uccompiler.y"
+#line 109 "uccompiler.y"
     { if((yyvsp[(2) - (2)].node))addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 19:
-#line 112 "uccompiler.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); (yyvsp[(1) - (1)].node) -> category = FuncBody; }
+#line 110 "uccompiler.y"
+    { (yyval.node) = newNode(FuncBody, NULL); addChildren((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 20:
-#line 113 "uccompiler.y"
+#line 111 "uccompiler.y"
     { (yyval.node) = newNode(FuncBody, NULL); if((yyvsp[(1) - (1)].node))addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 21:
-#line 117 "uccompiler.y"
-    { (yyvsp[(2) - (3)].node)->category = FuncDeclaration; (yyval.node) = (yyvsp[(2) - (3)].node);
-                                                                                addChildren((yyval.node), (yyvsp[(1) - (3)].node)); }
+#line 115 "uccompiler.y"
+    { (yyval.node) = newNode(FuncDeclaration, NULL); 
+                                                                               addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
+                                                                               addChildren((yyval.node), (yyvsp[(2) - (3)].node)); }
     break;
 
   case 22:
-#line 122 "uccompiler.y"
+#line 121 "uccompiler.y"
     { (yyval.node) = newNode(NullN, NULL); 
                                                                                addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (4)].lexeme))); 
                                                                                addChild((yyval.node), (yyvsp[(3) - (4)].node)); }
     break;
 
   case 23:
-#line 128 "uccompiler.y"
-    { addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
+#line 127 "uccompiler.y"
+    { (yyval.node) = (yyvsp[(1) - (3)].node); addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 24:
-#line 129 "uccompiler.y"
-    { (yyval.node) = newNode(ParamList, NULL);
-                                                                                addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
+#line 128 "uccompiler.y"
+    { (yyval.node) = newNode(ParamList, NULL); addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 25:
-#line 134 "uccompiler.y"
+#line 132 "uccompiler.y"
     { (yyval.node) = newNode(ParamDeclaration, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(1) - (2)].node)); 
                                                                                addChild((yyval.node), newNode(Identifier, (yyvsp[(2) - (2)].lexeme))); }
     break;
 
   case 26:
-#line 137 "uccompiler.y"
+#line 135 "uccompiler.y"
     { (yyval.node) = newNode(ParamDeclaration, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 27:
-#line 142 "uccompiler.y"
-    { (yyval.node) = (yyvsp[(2) - (3)].node); }
+#line 140 "uccompiler.y"
+    { (yyval.node) = (yyvsp[(2) - (3)].node); kind = (yyvsp[(1) - (3)].node); }
     break;
 
   case 28:
-#line 143 "uccompiler.y"
-    { (yyval.node) = newNode(NullN, NULL); }
+#line 141 "uccompiler.y"
+    { (yyval.node) = newNode(Null, NULL); }
     break;
 
   case 29:
-#line 147 "uccompiler.y"
+#line 145 "uccompiler.y"
     { (yyval.node) = (yyvsp[(1) - (3)].node); addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 30:
-#line 148 "uccompiler.y"
+#line 146 "uccompiler.y"
     { (yyval.node) = newNode(NullN, NULL); addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 31:
-#line 152 "uccompiler.y"
+#line 150 "uccompiler.y"
     { (yyval.node) = newNode(Declaration, NULL);
                                                                                addChild((yyval.node), kind);
-                                                                               addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (1)].lexeme))); }
+                                                                               addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (1)].lexeme)));
+                                                                               }
     break;
 
   case 32:
-#line 155 "uccompiler.y"
-    { (yyval.node) = newNode(Declaration, NULL);
+#line 154 "uccompiler.y"
+    { (yyval.node) = newNode(Declaration, NULL); 
                                                                                addChild((yyval.node), kind);
-                                                                               addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (3)].lexeme)));
-                                                                               addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
+                                                                               addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (3)].lexeme))); 
+                                                                               addChild((yyval.node), (yyvsp[(3) - (3)].node)); 
+                                                                               }
     break;
 
   case 33:
 #line 162 "uccompiler.y"
-    { if((yyvsp[(2) - (2)].node))addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
+    { (yyval.node) = (yyvsp[(1) - (2)].node); if((yyvsp[(2) - (2)].node))addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 34:
@@ -1782,266 +1782,271 @@ yyreduce:
 
   case 38:
 #line 172 "uccompiler.y"
-    { (yyval.node) = newNode(NullN, NULL); 
-                                                                               addChildren((yyval.node), (yyvsp[(2) - (3)].node)); }
+    { if(!(yyvsp[(2) - (3)].node)->children->next){ (yyval.node) = NULL; } else if(!(yyvsp[(2) - (3)].node)->children->next->next)(yyval.node) = (yyvsp[(2) - (3)].node)->children->next->node; else (yyval.node) = (yyvsp[(2) - (3)].node); }
     break;
 
   case 39:
-#line 174 "uccompiler.y"
+#line 173 "uccompiler.y"
     { (yyval.node) = newNode(If, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(3) - (5)].node)); 
-                                                                               addChild((yyval.node), (yyvsp[(5) - (5)].node)); }
+                                                                               if((yyvsp[(5) - (5)].node))addChild((yyval.node), (yyvsp[(5) - (5)].node));
+                                                                               else addChild((yyval.node), newNode(Null, NULL)); 
+                                                                               addChild((yyval.node), newNode(Null, NULL));}
     break;
 
   case 40:
-#line 177 "uccompiler.y"
-    { (yyval.node) = newNode(IfElse, NULL); 
+#line 178 "uccompiler.y"
+    { (yyval.node) = newNode(If, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(3) - (7)].node)); 
-                                                                               addChild((yyval.node), (yyvsp[(5) - (7)].node)); 
-                                                                               addChild((yyval.node), (yyvsp[(7) - (7)].node)); }
+                                                                               if((yyvsp[(5) - (7)].node))addChild((yyval.node), (yyvsp[(5) - (7)].node));
+                                                                               else addChild((yyval.node), newNode(Null, NULL)); 
+                                                                               if((yyvsp[(7) - (7)].node))addChild((yyval.node), (yyvsp[(7) - (7)].node)); 
+                                                                               else addChild((yyval.node), newNode(Null, NULL));}
     break;
 
   case 41:
-#line 181 "uccompiler.y"
+#line 184 "uccompiler.y"
     { (yyval.node) = newNode(While, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(3) - (5)].node)); 
-                                                                               addChild((yyval.node), (yyvsp[(5) - (5)].node)); }
+                                                                               if((yyvsp[(5) - (5)].node))addChild((yyval.node), (yyvsp[(5) - (5)].node));
+                                                                               else addChild((yyval.node), newNode(Null, NULL)); }
     break;
 
   case 42:
-#line 184 "uccompiler.y"
+#line 188 "uccompiler.y"
     { (yyval.node) = newNode(Return, NULL); 
                                                                                addChild((yyval.node), (yyvsp[(2) - (3)].node)); }
     break;
 
   case 43:
-#line 186 "uccompiler.y"
-    { (yyval.node) = newNode(Return, NULL); }
+#line 190 "uccompiler.y"
+    { (yyval.node) = newNode(Return, NULL);
+                                                                                addChild((yyval.node), newNode(Null, NULL)); }
     break;
 
   case 44:
-#line 187 "uccompiler.y"
-    { (yyval.node) = newNode(NullN, NULL); }
+#line 192 "uccompiler.y"
+    { (yyval.node) = NULL; }
     break;
 
   case 45:
-#line 188 "uccompiler.y"
+#line 193 "uccompiler.y"
     { (yyval.node) = newNode(Null, NULL); }
     break;
 
   case 46:
-#line 189 "uccompiler.y"
-    { (yyval.node) = newNode(Null, NULL); }
+#line 194 "uccompiler.y"
+    { (yyval.node) = NULL; }
     break;
 
   case 47:
-#line 193 "uccompiler.y"
+#line 198 "uccompiler.y"
     { (yyval.node) = newNode(Comma, NULL); addChild((yyval.node), (yyvsp[(1) - (3)].node)); addChild((yyval.node), (yyvsp[(3) - (3)].node));}
     break;
 
   case 48:
-#line 194 "uccompiler.y"
+#line 199 "uccompiler.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); }
     break;
 
   case 49:
-#line 199 "uccompiler.y"
+#line 204 "uccompiler.y"
     { addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 50:
-#line 200 "uccompiler.y"
+#line 205 "uccompiler.y"
     { (yyval.node) = newNode(NullN, NULL); addChild((yyval.node), (yyvsp[(1) - (1)].node)); }
     break;
 
   case 51:
-#line 204 "uccompiler.y"
+#line 209 "uccompiler.y"
     { (yyval.node) = newNode(Or, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 52:
-#line 207 "uccompiler.y"
+#line 212 "uccompiler.y"
     { (yyval.node) = newNode(And, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 53:
-#line 210 "uccompiler.y"
+#line 215 "uccompiler.y"
     { (yyval.node) = newNode(BitWiseOr, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 54:
-#line 213 "uccompiler.y"
+#line 218 "uccompiler.y"
     { (yyval.node) = newNode(BitWiseXor, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 55:
-#line 216 "uccompiler.y"
+#line 221 "uccompiler.y"
     { (yyval.node) = newNode(BitWiseAnd, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 56:
-#line 219 "uccompiler.y"
+#line 224 "uccompiler.y"
     { (yyval.node) = newNode(Eq, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 57:
-#line 222 "uccompiler.y"
+#line 227 "uccompiler.y"
     { (yyval.node) = newNode(Ne, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 58:
-#line 225 "uccompiler.y"
+#line 230 "uccompiler.y"
     { (yyval.node) = newNode(Gt, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 59:
-#line 228 "uccompiler.y"
+#line 233 "uccompiler.y"
     { (yyval.node) = newNode(Ge, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 60:
-#line 231 "uccompiler.y"
+#line 236 "uccompiler.y"
     { (yyval.node) = newNode(Lt, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 61:
-#line 234 "uccompiler.y"
+#line 239 "uccompiler.y"
     { (yyval.node) = newNode(Le, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 62:
-#line 237 "uccompiler.y"
+#line 242 "uccompiler.y"
     { (yyval.node) = newNode(Store, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 63:
-#line 240 "uccompiler.y"
+#line 245 "uccompiler.y"
     { (yyval.node) = newNode(Mul, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 64:
-#line 243 "uccompiler.y"
+#line 248 "uccompiler.y"
     { (yyval.node) = newNode(Mod, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 65:
-#line 246 "uccompiler.y"
+#line 251 "uccompiler.y"
     { (yyval.node) = newNode(Div, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 66:
-#line 249 "uccompiler.y"
-    { (yyval.node) = newNode(Plus, NULL);
+#line 254 "uccompiler.y"
+    { (yyval.node) = newNode(Add, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 67:
-#line 252 "uccompiler.y"
-    { (yyval.node) = newNode(Minus, NULL);
+#line 257 "uccompiler.y"
+    { (yyval.node) = newNode(Sub, NULL);
                                                                      addChild((yyval.node), (yyvsp[(1) - (3)].node)); 
                                                                      addChild((yyval.node), (yyvsp[(3) - (3)].node)); }
     break;
 
   case 68:
-#line 255 "uccompiler.y"
-    { (yyval.node) = newNode(Call, (yyvsp[(1) - (3)].lexeme)); 
+#line 260 "uccompiler.y"
+    { (yyval.node) = newNode(Call, NULL); 
                                                                      addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (3)].lexeme))); }
     break;
 
   case 69:
-#line 257 "uccompiler.y"
+#line 262 "uccompiler.y"
     { (yyval.node) = newNode(Minus, NULL);
                                                                      addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 70:
-#line 259 "uccompiler.y"
+#line 264 "uccompiler.y"
     { (yyval.node) = newNode(Plus, NULL);
                                                                      addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 71:
-#line 261 "uccompiler.y"
+#line 266 "uccompiler.y"
     { (yyval.node) = newNode(Not, NULL);
                                                                      addChild((yyval.node), (yyvsp[(2) - (2)].node)); }
     break;
 
   case 72:
-#line 263 "uccompiler.y"
-    { (yyval.node) = newNode(Call, (yyvsp[(1) - (4)].lexeme)); 
+#line 268 "uccompiler.y"
+    { (yyval.node) = newNode(Call, NULL); 
                                                                      addChild((yyval.node), newNode(Identifier, (yyvsp[(1) - (4)].lexeme)));
                                                                      addChildren((yyval.node), (yyvsp[(3) - (4)].node)); }
     break;
 
   case 73:
-#line 266 "uccompiler.y"
+#line 271 "uccompiler.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); }
     break;
 
   case 74:
-#line 267 "uccompiler.y"
+#line 272 "uccompiler.y"
     { (yyval.node) = newNode(Identifier, (yyvsp[(1) - (1)].lexeme)); }
     break;
 
   case 75:
-#line 268 "uccompiler.y"
+#line 273 "uccompiler.y"
     { (yyval.node) = newNode(Chrlit, (yyvsp[(1) - (1)].lexeme)); }
     break;
 
   case 76:
-#line 269 "uccompiler.y"
+#line 274 "uccompiler.y"
     { (yyval.node) = newNode(Decimal, (yyvsp[(1) - (1)].lexeme)); }
     break;
 
   case 77:
-#line 270 "uccompiler.y"
+#line 275 "uccompiler.y"
     { (yyval.node) = newNode(Natural, (yyvsp[(1) - (1)].lexeme)); }
     break;
 
   case 78:
-#line 271 "uccompiler.y"
+#line 276 "uccompiler.y"
     { (yyval.node) = newNode(Identifier, (yyvsp[(1) - (4)].lexeme)); }
     break;
 
   case 79:
-#line 272 "uccompiler.y"
+#line 277 "uccompiler.y"
     { (yyval.node) = newNode(Null, NULL); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2045 "y.tab.c"
+#line 2050 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2255,5 +2260,5 @@ yyreturn:
 }
 
 
-#line 274 "uccompiler.y"
+#line 279 "uccompiler.y"
 

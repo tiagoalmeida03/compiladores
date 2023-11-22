@@ -132,11 +132,12 @@ int main(int argc, char **argv) {
             yyparse(); 
             if(!strcmp(argv[1], "-t")){
                 myFlag = 2;
+                if(!errors)
+                    show(program, 0);
             }
         }
     }else{
         yyparse();
-        show(program, 0);
     }
     return 0;
 }
