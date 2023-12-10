@@ -11,6 +11,7 @@ NL \n|\r|\r\n
 %{
 #include "y.tab.h"
 #include "ast.h"
+#include "semantics.h"
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
@@ -19,6 +20,7 @@ NL \n|\r|\r\n
 #define PASS_TOKEN() yylval.lexeme = strdup(yytext);
 
 extern int yyparse();
+void yyerror(char *);
 
 int un_line = 1, un_column = 1, line = 1, column = 1, syn_line = 1, syn_column = 1, errors = 0;
 int myFlag = 0;
@@ -42,6 +44,7 @@ void inv_char(int line, int column, char character) {
 extern struct node *program;
 
 %}
+
 %x COMMENT
 %%
 
@@ -128,17 +131,30 @@ int main(int argc, char **argv) {
         if(!strcmp(argv[1], "-l")){
             yylex();
             myFlag = 1;
-        }else{
+        }if(!strcmp(argv[1], "-t")){
             yyparse(); 
-            if(!strcmp(argv[1], "-t")){
-                myFlag = 2;
-                if(!errors)
+            myFlag = 2;
+            if(!errors)
+                show(program, 0);
+        }
+        if(!strcmp(argv[1], "-s")){
+            yyparse();
+            if (!erros){
+                errors += check_program(program);
+                if(errors == 0) {
+                    show_symbol_table();
+                    printf("\n");
                     show(program, 0);
+                }
             }
         }
+    
     }else{
+        yylex();
         yyparse();
-    }
+        if (!errors)
+             check_program(program);   
+    }    
     return 0;
 }
 

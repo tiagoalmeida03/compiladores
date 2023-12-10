@@ -17,6 +17,7 @@ struct node *newNode(enum category category, char *token) {
     struct node *new = malloc(sizeof(struct node));
     new->category = category;
     new->token = token;
+    new->type = no_type;
     new->children = malloc(sizeof(struct node_list));
     new->children->node = NULL;
     new->children->next = NULL;
@@ -40,6 +41,18 @@ void addChildren(struct node *parent, struct node *temporary){
     addChild(parent, aux->node);
   }
 }
+
+// get a pointer to a specific child, numbered 0, 1, 2, ...
+struct node *getchild(struct node *parent, int position) {
+    struct node_list *children = parent->children;
+    while((children = children->next) != NULL)
+        if(position-- == 0)
+            return children->node;
+    return NULL;
+}
+
+// category names #defined in ast.h
+char *category_name[] = names;
 
 void show(struct node *n, int level){
     for(int i = 0; i < level; i++) printf("..");
