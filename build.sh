@@ -1,9 +1,38 @@
 #!/bin/sh
-rm -f uccomp lex.yy.c y.tab.c y.tab.h
+
+# Remove existing temporary files
+rm -f lex.yy.c y.tab.c uccomp
+
+# Compile the Yacc and Lex files
 yacc -d -v -t -g --report=all uccompiler.y
 lex uccompiler.l
-cc -o uccomp lex.yy.c y.tab.c ast.c -Wall -Wno-unused-function
-zip uccompiler.zip uccompiler.l uccompiler.y ast.c ast.h
+
+# Check if compilation steps were successful
+if [ $? -eq 0 ]; then
+    # Compile the C files
+    cc -o uccomp lex.yy.c y.tab.c ast.c semantics.c -Wall -Wno-unused-function
+
+    # Check if the executable was created successfully
+    if [ -e uccomp ]; then
+        echo "Build successful. Compiler executable: uccomp"
+    else
+        echo "Build failed. Unable to create the compiler executable."
+        exit 1
+    fi
+
+    # Create a ZIP file with relevant source files
+    zip uccompiler.zip uccompiler.l uccompiler.y ast.c ast.h semantics.c semantics.h
+
+    echo "ZIP file uccompiler.zip created with source files."
+
+else
+    echo "Yacc or Lex compilation failed. Unable to proceed with C compilation."
+    exit 1
+fi
+
+# Remove intermediate files
+rm -f lex.yy.c y.tab.c
+
 
 FILE=$1
 if [ -z "$FILE" ]; then

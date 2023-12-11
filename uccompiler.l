@@ -137,11 +137,11 @@ int main(int argc, char **argv) {
             if(!errors)
                 show(program, 0);
         }
-        if(!strcmp(argv[1], "-s")){
+        if (!strcmp(argv[1], "-s")) {
             yyparse();
-            if (!erros){
+            if (!errors) {
                 errors += check_program(program);
-                if(errors == 0) {
+                if (errors == 0) {
                     show_symbol_table();
                     printf("\n");
                     show(program, 0);

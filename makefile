@@ -1,19 +1,14 @@
-all: yacc lex gcc clean zip
+uccompiler: lex.yy.c y.tab.c ast.c semantics.c
+    cc -o uccomp lex.yy.c y.tab.c ast.c semantics.c -Wall -Wno-unused-function
 
-run: yacc lex gcc clean
-	./lexer -t < test.in
+lex.yy.c: uccompiler.l
+    lex uccompiler.l
 
-yacc: uccompiler.y
-	yacc -d -v -t -g -Wcounterexamples --report=all uccompiler.y
+y.tab.c: uccompiler.y
+    yacc -d -v -t -g --report=all uccompiler.y
 
-lex: uccompiler.l
-	lex uccompiler.l
-
-gcc: lex.yy.c y.tab.c ast.c
-	gcc lex.yy.c y.tab.c ast.c -Wall -Wextra -o lexer 
+uccompiler.zip: uccompiler.l uccompiler.y ast.c ast.h semantics.c semantics.h
+    zip uccompiler.zip $^
 
 clean:
-	rm -f lex.yy.c y.tab.c y.tab.h y.output y.gv
-
-zip:
-	zip uccompiler.zip uccompiler.y uccompiler.l ast.h ast.c
+    rm -f lex.yy.c y.tab.c uccomp uccompiler.zip

@@ -5,20 +5,117 @@
 #include "semantics.h"
 
 int semantic_errors = 0;
-
 struct symbol_list *symbol_table;
 
 void check_function(struct node *function) {
     struct node *id = getchild(function, 0);
-    if(search_symbol(symbol_table, id->token) == NULL) {
+    if (search_symbol(symbol_table, id->token) == NULL) {
         insert_symbol(symbol_table, id->token, no_type, function);
+        
+        // Additional checks for parameters
+        struct node *params = getchild(function, 1);
+        // Iterate through parameter list and perform necessary checks
+        
+        // Additional checks for expressions
+        struct node *body = getchild(function, 2);
+        check_expression(body);
     } else {
         printf("Identifier %s already declared\n", id->token);
         semantic_errors++;
     }
-    //check_parameters(getchild(function, 1));
-    //check_expression(getchild(function, 2));
 }
+
+enum type get_variable_type(struct node *declaration) {
+    struct node *typeNode = getchild(declaration, 0);
+    // Determine the type based on the typeNode and return it
+}
+
+void check_declaration(struct node *declaration) {
+    struct node *id = getchild(declaration, 1);
+    if (search_symbol(symbol_table, id->token) == NULL) {
+        enum type varType = get_variable_type(declaration);
+        insert_symbol(symbol_table, id->token, varType, declaration);
+    } else {
+        printf("Identifier %s already declared\n", id->token);
+        semantic_errors++;
+    }
+}
+
+enum type check_expression(struct node *expression) {
+    enum type resultType = no_type;
+    // Perform type checking for the expression
+    
+    // Recursive traversal for subexpressions
+    struct node_list *children = expression->children;
+    while (children != NULL) {
+        resultType = check_expression(children->node);
+        children = children->next;
+    }
+
+    // Return the type of the expression or resultType
+    return resultType;
+}
+
+void check_function_call(struct node *call) {
+    struct node *id = getchild(call, 0);
+    struct symbol_list *functionSymbol = search_symbol(symbol_table, id->token);
+    if (functionSymbol == NULL) {
+        printf("Unknown symbol %s\n", id->token);
+        semantic_errors++;
+        return;
+    }
+
+    // Additional checks for argument types and number of arguments
+    struct node *args = getchild(call, 1);
+    // Iterate through arguments and compare types with the function's parameter types
+}
+
+
+void check_return_statement(struct node *returnStmt) {
+    struct node *expr = getchild(returnStmt, 0);
+    enum type returnType = check_expression(expr);
+    
+    // Compare returnType with the expected return type of the current function
+    struct node *currentFunction = find_enclosing_function(returnStmt);
+    enum type expectedReturnType = get_function_return_type(currentFunction);
+    
+    if (returnType != expectedReturnType) {
+        printf("Return type mismatch. Expected: %s, Got: %s\n", type_name(expectedReturnType), type_name(returnType));
+        semantic_errors++;
+    }
+}
+
+void report_semantic_error(char *message, int line, int column) {
+    printf("Line %d, column %d: %s\n", line, column, message);
+    semantic_errors++;
+}
+
+struct node *find_enclosing_function(struct node *node) {
+    // Traverse the AST upward to find the nearest function node
+    while (node != NULL && node->category != FuncDefinition) {
+        node = get_parent(node, node);
+    }
+    return node;
+}
+
+// Define category_type function
+enum type category_type(enum category category) {
+    switch (category) {
+        case Int:
+            return integer_type;
+        case Double:
+            return double_type;
+        default:
+            return no_type;
+    }
+}
+
+enum type get_function_return_type (struct node *function) {  
+    // Assuming the function node has the expected structure
+    struct node *returnTypeNode = getchild(function, 0); // Assuming the return type is the first child
+    return category_type(returnTypeNode->category);
+}
+
 
 // semantic analysis begins here, with the AST root node
 int check_program(struct node *program) {

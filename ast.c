@@ -42,6 +42,27 @@ void addChildren(struct node *parent, struct node *temporary){
   }
 }
 
+struct node *get_parent(struct node *root, struct node *child) {
+    if (root == NULL || child == NULL) {
+        return NULL;
+    }
+
+    struct node_list *children = root->children;
+    while (children != NULL) {
+        if (children->node == child) {
+            return root;
+        }
+        struct node *parent = get_parent(children->node, child);
+        if (parent != NULL) {
+            return parent;
+        }
+        children = children->next;
+    }
+
+    return NULL;
+}
+
+
 // get a pointer to a specific child, numbered 0, 1, 2, ...
 struct node *getchild(struct node *parent, int position) {
     struct node_list *children = parent->children;
