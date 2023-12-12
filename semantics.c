@@ -99,7 +99,7 @@ struct node *find_enclosing_function(struct node *node) {
 }
 
 // Define category_type function
-enum type category_type(enum category category) {
+enum type category_type (enum category category) {
     switch (category) {
         case Int:
             return integer_type;
@@ -110,7 +110,10 @@ enum type category_type(enum category category) {
     }
 }
 
-enum type get_function_return_type (struct node *function) {  
+enum type get_function_return_type (struct node *function) {
+    enum type Int, Double; // Define Int within the function
+    Int = 0; // Assign a value to Int
+    Double = 1;
     // Assuming the function node has the expected structure
     struct node *returnTypeNode = getchild(function, 0); // Assuming the return type is the first child
     return category_type(returnTypeNode->category);
