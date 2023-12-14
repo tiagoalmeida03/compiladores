@@ -6,6 +6,7 @@
 
 int semantic_errors = 0;
 struct symbol_list *symbol_table;
+struct function_list *function_table;
 
 void check_function(struct node *function) {
     struct node *id = getchild(function, 0);
@@ -72,13 +73,19 @@ void check_function_call(struct node *call) {
 
 
 void check_return_statement(struct node *returnStmt) {
+    if (returnStmt->children->category != Expr) {
+        printf("Return statement must have an expression\n");
+        semantic_errors++;
+        return;
+    }
+
     struct node *expr = getchild(returnStmt, 0);
     enum type returnType = check_expression(expr);
-    
+
     // Compare returnType with the expected return type of the current function
     struct node *currentFunction = find_enclosing_function(returnStmt);
     enum type expectedReturnType = get_function_return_type(currentFunction);
-    
+
     if (returnType != expectedReturnType) {
         printf("Return type mismatch. Expected: %s, Got: %s\n", type_name(expectedReturnType), type_name(returnType));
         semantic_errors++;
@@ -96,18 +103,6 @@ struct node *find_enclosing_function(struct node *node) {
         node = get_parent(node, node);
     }
     return node;
-}
-
-// Define category_type function
-enum type category_type (enum category category) {
-    switch (category) {
-        case Int:
-            return integer_type;
-        case Double:
-            return double_type;
-        default:
-            return no_type;
-    }
 }
 
 enum type get_function_return_type (struct node *function) {
@@ -160,8 +155,34 @@ struct symbol_list *search_symbol(struct symbol_list *table, char *identifier) {
     return NULL;
 }
 
+void show_tables(){
+    show_symbol_table();
+    printf("\n");
+    show_function_table();
+}
+
 void show_symbol_table() {
     struct symbol_list *symbol;
-    for(symbol = symbol_table->next; symbol != NULL; symbol = symbol->next)
-        printf("Symbol %s : %s\n", symbol->identifier, type_name(symbol->type));
+    printf("===== Global Symbol Table =====\n");
+    for(symbol = symbol_table->next; symbol != NULL; symbol = symbol->next){
+        printf("%s %s", symbol->identifier, (symbol->type));
+        if (symbol->tparam != NULL)
+            printf("(%s)\n", symbol->tparam);
+        else
+            printf("\n");
+    }
+    printf("\n");
+}
+
+void show_function_table(){
+    struct function_list *symbol;
+    printf("===== Function main Symbol Table =====");
+    for(symbol = function_table->next; symbol != NULL; symbol = symbol->next){
+        printf("%s %s", symbol->identifier, (symbol->type));
+        if (symbol->tparam != NULL)
+            printf("(%s)\n", symbol->tparam);
+        else
+            printf("\n");
+    }
+    printf("\n");
 }

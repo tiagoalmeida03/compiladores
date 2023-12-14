@@ -2228,7 +2228,7 @@ int main(int argc, char **argv) {
             if (!errors) {
                 errors += check_program(program);
                 if (errors == 0) {
-                    show_symbol_table();
+                    show_tables();
                     printf("\n");
                     show(program, 0);
                 }
