@@ -6,7 +6,6 @@
 
 int semantic_errors = 0;
 struct symbol_list *symbol_table;
-struct function_list *function_table;
 
 void check_function(struct node *function) {
     struct node *id = getchild(function, 0);
@@ -175,14 +174,17 @@ void show_symbol_table() {
 }
 
 void show_function_table(){
-    struct function_list *symbol;
-    printf("===== Function main Symbol Table =====");
-    for(symbol = function_table->next; symbol != NULL; symbol = symbol->next){
-        printf("%s %s", symbol->identifier, (symbol->type));
-        if (symbol->tparam != NULL)
-            printf("(%s)\n", symbol->tparam);
-        else
-            printf("\n");
+    struct symbol_list *symbol;
+    for(symbol = symbol_table->next; symbol != NULL; symbol = symbol->next){
+        //if symbol is declared
+        printf("===== Function %s Symbol Table =====", symbol->identifier);
+        for(symbol = symbol->function; symbol != NULL; symbol = symbol->next){
+            printf("%s %s", symbol->identifier, (symbol->type));
+            if (symbol->tparam != NULL)
+                printf("(%s)\n", symbol->tparam);
+            else
+                printf("\n");
+        }
     }
     printf("\n");
 }
