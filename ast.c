@@ -2,6 +2,31 @@
 #include <stdio.h>
 #include "ast.h"
 
+enum type type_name(char *type){
+    switch (type[0]){
+        case 'i':
+            return integer_type;
+            break;
+        case 'd':
+            return double_type;
+            break;
+        case 'c':
+            return char_type;
+            break;
+        case 'u':
+            return undef_type;
+            break;
+        case 'v':   
+            return void_type;
+            break;
+        case 'n':
+            return no_type;
+            break;
+        default:
+            break;
+    }
+};
+
 // create a node of a given category with a given lexical symbol
 char *category_char[]={ "Program", "FuncDefinition", "FuncBody", "FuncDeclaration", 
                         "Call", "ParamList", "ParamDeclaration", "Declaration", 

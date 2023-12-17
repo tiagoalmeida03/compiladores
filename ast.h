@@ -24,32 +24,6 @@ enum type { \
                 "Not", "Eq", "Ne", "Le", "Ge", "Lt", "Gt", "Char", "Decimal", "Int", \
                 "Void", "Short", "Double", "Natural", "Chrlit", "Null", "StatList", "Comma", "NullN" };
 
-enum type type_name(type){
-    switch (type){
-        case integer_type:
-            return "int";
-            break;
-        case double_type:
-            return "double";
-            break;
-        case char_type:
-            return "char";
-            break;
-        case undef_type:
-            return "undef";
-            break;
-        case void_type:
-            return "void";
-            break;
-        case no_type:
-            return "no_type";
-            break;
-        default:
-            return "invalid";
-            break;
-    }
-};
-
 #define category_type(category) \
     (category == Int ? integer_type : \
      (category == Double ? double_type : \
@@ -80,6 +54,7 @@ void addChild(struct node *parent, struct node *child);
 void addChildren(struct node *parent, struct node *children);
 struct node *getchild(struct node *parent, int position);
 void show(struct node *n, int level);
+enum type type_name(char *type);
 int yylex_destroy();
 
 #endif

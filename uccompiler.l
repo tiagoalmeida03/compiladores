@@ -127,35 +127,29 @@ auto|break|case|const|continue|inline|define|default|do|long|register|restrict|s
 %%
 extern int yylex();
 int main(int argc, char **argv) {
-    if(argc > 1){
-        if(!strcmp(argv[1], "-l")){
-            yylex();
-            myFlag = 1;
-        }if(!strcmp(argv[1], "-t")){
-            yyparse(); 
-            myFlag = 2;
-            if(!errors)
-                show(program, 0);
-        }
-        if (!strcmp(argv[1], "-s")) {
-            yyparse();
-            if (!errors) {
-                errors += check_program(program);
-                if (errors == 0) {
-                    show_tables();
-                    printf("\n");
-                    show(program, 0);
-                }
-            }
-        }
-    
-    }else{
-        yylex();
-        yyparse();
-        if (!errors)
-             check_program(program);   
-    }    
-    return 0;
+  if(argc > 1){
+    if(!strcmp(argv[1], "-l")){
+      myFlag = 1;
+    }else if(!strcmp(argv[1], "-t")){
+      myFlag = 2;
+    }else if(!strcmp(argv[1], "-s")){
+      myFlag = 3;
+    }
+  }
+
+  if(myFlag == 1){
+    yylex(); 
+  }else{
+    yyparse();
+    if(myFlag == 2 && errors == 0){
+      show(program, 0);
+    }
+    else if(myFlag == 3 && errors == 0){
+      showSymbolTable(program);
+      show(program, 0);
+    }
+  }
+  return 0;
 }
 
 int yywrap() {
