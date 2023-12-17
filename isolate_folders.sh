@@ -1,3 +1,5 @@
+#!/bin/bash
+
 meta="meta3"
 
 for file in "./c/$meta"/*c; do

@@ -6,7 +6,7 @@ enum category { Program, FuncDefinition, FuncBody, FuncDeclaration, Call, \
                 If, IfElse, While, Return, Add, Sub, Mul, Div, Mod, Or, And, BitWiseOr, \
                 BitWiseAnd, BitWiseXor, Plus, Minus, Not, Eq, Ne, Le, Ge, Lt, \
                 Gt, Char, Decimal, Int, Void, Short, Double, Natural, Chrlit, \
-                Null, StatList, Comma, NullN };
+                Null, StatList, Comma, Undef, NullN };
 
 enum type { \
     integer_type, \
@@ -24,29 +24,39 @@ enum type { \
                 "Not", "Eq", "Ne", "Le", "Ge", "Lt", "Gt", "Char", "Decimal", "Int", \
                 "Void", "Short", "Double", "Natural", "Chrlit", "Null", "StatList", "Comma", "NullN" };
 
-#define type_name(type) \
-    switch (type) { \
-        case integer_type: \
-            return "int"; \
-        case double_type: \
-            return "double"; \
-        case char_type: \
-            return "char"; \
-        case undef_type: \
-            return "undef"; \
-        case void_type: \
-            return "void"; \
-        case no_type: \
-            return "no_type"; \
-        default: \
-            return "invalid"; \
+enum type type_name(type){
+    switch (type){
+        case integer_type:
+            return "int";
+            break;
+        case double_type:
+            return "double";
+            break;
+        case char_type:
+            return "char";
+            break;
+        case undef_type:
+            return "undef";
+            break;
+        case void_type:
+            return "void";
+            break;
+        case no_type:
+            return "no_type";
+            break;
+        default:
+            return "invalid";
+            break;
     }
+};
 
 #define category_type(category) \
     (category == Int ? integer_type : \
      (category == Double ? double_type : \
       (category == Char ? char_type : \
-       (category == Undef ? undef_type : void_type))))
+       (category == Undef ? undef_type : \
+         category == Void ? void_type : \
+          no_type))))
 
 struct node *get_parent(struct node *root, struct node *child);
 struct node *getchild(struct node *parent, int position);

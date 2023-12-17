@@ -71,8 +71,8 @@ void check_function_call(struct node *call) {
 }
 
 
-void check_return_statement(struct node *returnStmt) {
-    if (returnStmt->children->category != Expr) {
+/*void check_return_statement(struct node *returnStmt) {
+    if (returnStmt->children->node->category != Expr) {
         printf("Return statement must have an expression\n");
         semantic_errors++;
         return;
@@ -89,7 +89,7 @@ void check_return_statement(struct node *returnStmt) {
         printf("Return type mismatch. Expected: %s, Got: %s\n", type_name(expectedReturnType), type_name(returnType));
         semantic_errors++;
     }
-}
+}*/
 
 void report_semantic_error(char *message, int line, int column) {
     printf("Line %d, column %d: %s\n", line, column, message);
@@ -106,7 +106,7 @@ struct node *find_enclosing_function(struct node *node) {
 
 enum type get_function_return_type (struct node *function) {
     enum type Int, Double; // Define Int within the function
-    Int = 0; // Assign a value to Int
+    Int = 0;
     Double = 1;
     // Assuming the function node has the expected structure
     struct node *returnTypeNode = getchild(function, 0); // Assuming the return type is the first child
