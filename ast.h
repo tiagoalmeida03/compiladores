@@ -33,9 +33,7 @@ enum type { \
           no_type))))
 
 struct node *get_parent(struct node *root, struct node *child);
-struct node *getchild(struct node *parent, int position);
 enum type get_function_return_type(struct node *function);
-int yylex_destroy();
 
 struct node {
     enum category category;
@@ -54,7 +52,7 @@ void addChild(struct node *parent, struct node *child);
 void addChildren(struct node *parent, struct node *children);
 struct node *getchild(struct node *parent, int position);
 void show(struct node *n, int level);
-enum type type_name(char *type);
+enum type type_name(enum type type);
 int yylex_destroy();
 
 #endif

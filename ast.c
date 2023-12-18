@@ -2,24 +2,24 @@
 #include <stdio.h>
 #include "ast.h"
 
-enum type type_name(char *type){
-    switch (type[0]){
-        case 'i':
+enum type type_name(enum type type){
+    switch (type){
+        case integer_type:
             return integer_type;
             break;
-        case 'd':
+        case double_type:
             return double_type;
             break;
-        case 'c':
+        case char_type:
             return char_type;
             break;
-        case 'u':
+        case undef_type:
             return undef_type;
             break;
-        case 'v':   
+        case void_type:
             return void_type;
             break;
-        case 'n':
+        case no_type:
             return no_type;
             break;
         default:

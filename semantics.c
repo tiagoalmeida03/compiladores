@@ -17,10 +17,6 @@ void check_function(struct node *scoped_table_list) {
     if (symbol == NULL) {
         insert_symbol(global_table, id->token, no_type, scoped_table_list);
 
-        // Additional checks for parameters
-        struct node *params = getchild(scoped_table_list, 1);
-        // Iterate through parameter list and perform necessary checks
-
         // Additional checks for expressions
         struct node *body = getchild(scoped_table_list, 2);
         check_expression(body, global_table);
@@ -33,6 +29,7 @@ void check_function(struct node *scoped_table_list) {
 enum type get_variable_type(struct node *declaration) {
     struct node *typeNode = getchild(declaration, 0);
     // Determine the type based on the typeNode and return it
+    return category_type(typeNode->category);
 }
 
 struct scoped_table_list *insert_symbol_list(struct node *scoped_table_list, struct symbol_list *symbol_table){
@@ -74,10 +71,6 @@ void check_function_call(struct node *call) {
     }
 
     functionSymbol->defined = 1;
-
-    // Additional checks for argument types and number of arguments
-    struct node *args = getchild(call, 1);
-    // Iterate through arguments and compare types with the function's parameter types
 }
 
 void check_return_statement(struct node *returnStmt) {
@@ -96,7 +89,7 @@ void check_return_statement(struct node *returnStmt) {
     enum type expectedReturnType = get_function_return_type(currentFunction);
 
     if (returnType != expectedReturnType) {
-        printf("Return type mismatch. Expected: %s, Got: %s\n", type_name(expectedReturnType), type_name(returnType));
+        printf("Return type mismatch. Expected: %u, Got: %u\n", expectedReturnType, returnType);
         semantic_errors++;
     }
 }
@@ -364,15 +357,11 @@ struct node *find_enclosing_function(struct node *node) {
     return node;
 }
 
-enum type get_function_return_type (struct node *function) {
-    enum type Int, Double; // Define Int within the function
-    Int = 0;
-    Double = 1;
+enum type get_function_return_type(struct node *function) {
     // Assuming the function node has the expected structure
     struct node *returnTypeNode = getchild(function, 0); // Assuming the return type is the first child
-    return category_type(returnTypeNode->category);
+    return category_type((enum category)returnTypeNode->category);
 }
-
 
 // semantic analysis begins here, with the AST root node
 int check_program(struct node *program) {
@@ -452,9 +441,11 @@ void checkGlobalDeclaration(struct node *declaration){
 
 int checkProgram(struct node *program){
     global_table = malloc(sizeof(struct symbol_list));
+    global_table->next = NULL;
     global_table->identifier = NULL;
 
-    local_table_list = malloc(sizeof(struct function));
+    local_table_list = malloc(sizeof(struct scoped_table_list));
+    local_table_list->next = NULL;
     local_table_list->function = NULL;
     local_table_list->symbol_table = NULL;
     local_table_list->next = NULL;
@@ -468,7 +459,6 @@ int checkProgram(struct node *program){
             //! MISSING REDECLARATION, VOID CHECK AND PARAM CHECK
             struct node *type = getchild(current->node, 0);
             struct node *identifier = getchild(current->node, 1);
-            struct node *param_list = getchild(current->node, 2);
             struct symbol_list *symbol = search_symbol(global_table, identifier->token);
             struct symbol_list *local_table = malloc(sizeof(struct symbol_list));
             local_table->identifier = NULL;
@@ -549,14 +539,14 @@ void showSymbolTable() {
     printf("===== Global Symbol Table =====\n");
     struct symbol_list *current = global_table->next;
     while (current != NULL) {
-        printf("%s\t%s", current->identifier, type_name(current->type));
+        printf("%s\t%u", current->identifier, type_name(current->type));
         if (current->node->category == ParamDeclaration)
             printf("\tparam");
         else if (current->node->category == FuncDefinition || current->node->category == FuncDeclaration) {
             struct node_list *param_list = getchild(current->node, 2)->children->next;
             printf("(");
             while (param_list != NULL) {
-                printf("%s", type_name(category_type(getchild(param_list->node, 0)->category)));
+                printf("%u", type_name(category_type(getchild(param_list->node, 0)->category)));
                 param_list = param_list->next;
                 if (param_list != NULL)
                     printf(",");
@@ -576,7 +566,7 @@ void showSymbolTable() {
             printf("===== Function %s Symbol Table =====\n", getchild(current_local->function, 1)->token);
             current = current_local->symbol_table->next;
             while (current != NULL) {
-                printf("%s\t%s", current->identifier, type_name(current->type));
+                printf("%s\t%u", current->identifier, type_name(current->type));
                 if (current->node->category == ParamDeclaration)
                     printf("\tparam");
                 printf("\n");

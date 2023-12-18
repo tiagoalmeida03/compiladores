@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
       show(program, 0);
     }
     else if(myFlag == 3 && errors == 0){
-      showSymbolTable(program);
+      showSymbolTable();
       show(program, 0);
     }
   }
